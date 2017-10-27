@@ -28,3 +28,7 @@ Create application which the human can change the information in the server.
 
 ###### Notes
 Use firebase 
+
+- [ ] Test 1
+- [ ] Test 2
+- [ ] Test 3
