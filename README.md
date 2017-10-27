@@ -7,7 +7,11 @@ To edit this file read https://help.github.com/articles/basic-writing-and-format
 # TODO List by priority
 ##### 0. Decide which file in G MON to read
 ##### 1. Create the application(Android application AND desktop application)
-Program java application which get g-mon folder and create orginized CSV file
+Program java application which get g-mon folder and create orginized CSV file.
+All of us will make simple java library which takes *file* and convery it to CSV
+
+@Shlomi will make android application, @Amit and @Shiler will make desktop application. The application has GUI and stuff
+
 ##### 2. Create the server.
 ##### 3. Manage information
 
