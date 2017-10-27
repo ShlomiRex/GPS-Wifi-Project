@@ -2,12 +2,30 @@
 A project for second year of engineering.
 Collaborators: Amit , Shiler, Shlomi
 
-TODO:
-## Client Presentation
-Create a app that shows the information.
+To edit this file read [this] (https://help.github.com/articles/basic-writing-and-formatting-syntax/)
 
-## Server
+## TODO List by priority
+0. Everything must be working.
+0.1. Decide which file in G MON to read
+1. Create the server.
+1.1. Program java application to convery KML or CVS to useable tables
+1.1.1. Read section -1
+1.2. 
+2. Create the application
+3. Manage information
+
+
+# Client Presentation
+Create a app that stores the information and proccess it.
+
+# Server
 A server that stores the information
 
-## Information manage
+# Information Manage
 Create application which the human can change the information in the server.
+
+
+
+
+###### Notes
+Use firebase 
