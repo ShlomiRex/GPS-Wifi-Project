@@ -2,7 +2,7 @@
 A project for second year of engineering.
 Collaborators: Amit , Shiler, Shlomi
 
-**To edit this file read https://help.github.com/articles/basic-writing-and-formatting-syntax/
+To edit this file read https://help.github.com/articles/basic-writing-and-formatting-syntax/
 
 # TODO List by priority
 0. Decide which file in G MON to read
@@ -13,7 +13,15 @@ Collaborators: Amit , Shiler, Shlomi
 
 ## G MON features
 - [x] BSSID (It's like mac address of network card)
-- [ ] 
+- [x] Lattitude, Longtitude 
+- [x] SSID
+- [x] Crypt: Wifi security level (Open, WPA2, WPA3...)
+- [x] Beacon Interval
+- [x] Connection Mode (What is this?)
+- [x] Channel (What is this?)
+- [x] RXL (What is this?)
+- [x] Date
+- [x] Time
 
 # Client Application
 Make application which converts KML or CVS and upload to server
