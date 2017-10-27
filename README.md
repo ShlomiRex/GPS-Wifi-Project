@@ -5,11 +5,11 @@ Collaborators: Amit , Shiler, Shlomi
 To edit this file read https://help.github.com/articles/basic-writing-and-formatting-syntax/
 
 # TODO List by priority
-#### 0. Decide which file in G MON to read
-#### 1. Create the application(Android application AND desktop application)
-  #### - ** Program java application which get g-mon folder and create orginized CSV file
-#### 2. Create the server.
-#### 3. Manage information
+##### 0. Decide which file in G MON to read
+##### 1. Create the application(Android application AND desktop application)
+Program java application which get g-mon folder and create orginized CSV file
+##### 2. Create the server.
+##### 3. Manage information
 
 ## G MON Features
 - [x] BSSID (It's like mac address of network card)
