@@ -4,7 +4,7 @@ Collaborators: Amit , Shiler, Shlomi
 
 To edit this file read [this] (https://help.github.com/articles/basic-writing-and-formatting-syntax/)
 
-## TODO List by priority
+# TODO List by priority
 0. Everything must be working.
 0.1. Decide which file in G MON to read
 1. Create the server.
