@@ -9,7 +9,7 @@ To edit this file read [this] (https://help.github.com/articles/basic-writing-an
 0.1. Decide which file in G MON to read
 1. Create the server.
    - Program java application to convery KML or CVS to useable tables
-     -Read section -1
+      -Read section -1
 2. Create the application
 3. Manage information
 
