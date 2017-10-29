@@ -13,7 +13,7 @@ public class CVSFactory {
 	
 	//Writer to cvs text file.
 	private PrintWriter writer;
-	//hello
+	//hello 2
 	public CVSFactory(File file) throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Reading file: " + file.getAbsolutePath());
 		TypeOfFile type = TypeOfFile.GMON_Export_Text; //TODO: Change
