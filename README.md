@@ -41,11 +41,6 @@ A server that stores the information
 # Information Manage
 Create application which the human can change the information in the server.
 
-# Problems On The Way
-1. Unsure if want G MON or other applications. Missing altitude and device recognision.
-2. After choosing G MON, unsure which file to get the data from. There are several files in the g mon folder, and the most basic is the txt.
-3. Because of this we need system that can try to sniff the best file to read from. If the file is corrupted or invalid data then go to the next file. If all are corrupted, inform the user
-4. After we got the file 100% corruption free we need to think how to scan the file: If its text its easy. If its CSV (which currently I cant see any data on those files), if its KML and etc.
 
 
 ###### Notes
