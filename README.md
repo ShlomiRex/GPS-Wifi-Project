@@ -46,3 +46,4 @@ Create application which the human can change the information in the server.
 
 ###### Notes
 Use firebase 
+Shiler has gone to Miluim 29/10/2017 for 1 week
