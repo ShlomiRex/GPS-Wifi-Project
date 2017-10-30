@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
-public class CVSFactory {
+public class CSVFactory {
 	enum TypeOfFile {
 		//BSSID;LAT;LON;SSID;Crypt;Beacon Interval;Connection Mode;Channel;RXL;Date;Time
 		//11 variables.
@@ -13,15 +13,23 @@ public class CVSFactory {
 	
 	//Writer to cvs text file.
 	private PrintWriter writer;
-	//hello 2123123
-	public CVSFactory(File file) throws FileNotFoundException, UnsupportedEncodingException {
+	/** 
+	 * Path to CSV generated file
+	 */
+	private String outPath;
+	
+	/**
+	 * 
+	 * @param file A file to get data from.
+	 * @param outPath Absolute path to generated CSV file.
+	 * @param outName Name of CSV file.
+	 * @throws FileNotFoundException
+	 * @throws UnsupportedEncodingException
+	 */
+	public CSVFactory(File file, String outPath) throws FileNotFoundException, UnsupportedEncodingException {
 		System.out.println("Reading file: " + file.getAbsolutePath());
 		TypeOfFile type = TypeOfFile.GMON_Export_Text; //TODO: Change
-		
-		String outPath = "";
-		String outName = "out.txt";
-		
-		writer = new PrintWriter(outPath + outName, "UTF-8");
+		writer = new PrintWriter(outPath, "UTF-8");
 		
 		if(type == TypeOfFile.GMON_Export_Text) {
 			//find the first number in the text
@@ -34,14 +42,18 @@ public class CVSFactory {
 			}
 			scanner.close();
 			writer.close();
+			System.out.println("Output file: " +outPath);
 		}
 		
 	}
 
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-		String path = "C:/Users/ShlomiPC/Desktop/gmon3/gmon";
-		String fileName = "gmon_wlan.txt"; //TODO: Dynamically change
-		File file = new File(path+"/"+fileName);
-		new CVSFactory(file);
+		//TODO: Change dynamically
+		String path = "C:/Users/ShlomiPC/Desktop/gmon3/gmon/gmon_wlan.txt";
+		
+		String outPath = "C:/Users/ShlomiPC/Desktop/out.txt";
+		File file = new File(path);
+		new CSVFactory(file, outPath);
 	}
+
 }
