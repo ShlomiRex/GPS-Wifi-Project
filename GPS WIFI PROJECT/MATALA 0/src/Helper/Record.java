@@ -101,6 +101,9 @@ public class Record extends ArrayList<Object>{
 		return get(f.column);
 	}
 
+	/**
+	 * Print record.
+	 */
 	public void print() {
 		System.out.println(line);
 	}

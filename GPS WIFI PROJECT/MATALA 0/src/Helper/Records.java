@@ -43,12 +43,16 @@ public class Records extends ArrayList<Record> {
 
 
 		File outFile = new File(outPath);
+		
 		try {
 			PrintWriter pw = new PrintWriter(outFile);
+			//write wigle and header
+			writeToFile_WigleAndHeader(pw);
 			//write 10 best signals
 			for(int i = 0; i < 10; i++) 
 				pw.println(get(i).line);
 			pw.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -56,10 +60,8 @@ public class Records extends ArrayList<Record> {
 	} //end sort
 
 	public void print() {
-		System.out.println("Printing wigle and header...");
 		System.out.println(Record.buffLine(wigle));
 		System.out.println(Record.buffLine(header));
-		System.out.println("Printing data....");
 		for(Record r : this) {
 			r.print();
 		}
@@ -80,16 +82,20 @@ public class Records extends ArrayList<Record> {
 	 * @param f
 	 * @throws FileNotFoundException
 	 */
-	public void writeToFile_WigleAndHeader(File f) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(f);
-		pw.println(Record.buffLine(wigle));
-		pw.println(Record.buffLine(header));
-		pw.close();
+	public void writeToFile_WigleAndHeader(PrintWriter pw) {
+		String w = Record.buffLine(wigle);
+		String h = Record.buffLine(header);
+		pw.println(w);
+		pw.println(h);
 	}
 	
-	public void writeToFile(File f) throws FileNotFoundException {
-		PrintWriter pw = new PrintWriter(f);
-		writeToFile_WigleAndHeader(f);
+	/**
+	 * Writes to file Wigle, Header, Records
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
+	public void writeToFile(PrintWriter pw) throws FileNotFoundException {
+		writeToFile_WigleAndHeader(pw);
 		for(Record r : this)
 			pw.println(r.line);
 		pw.close();

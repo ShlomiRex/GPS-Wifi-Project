@@ -62,22 +62,9 @@ public class CSVFactory {
 		csv = new CSV(records);
 	}
 
-	private void readFile(CSVReader reader) throws IOException {
-		String[] s;
-		// pass
-		reader.readNext(); // Start line
-		// pass
-		reader.readNext(); // Header lines
-
-		s = reader.readNext(); // Field lines
-		while (s != null) {
-			records.add(new Record(s));
-			s = reader.readNext();
-		}
-	}
 
 	/**
-	 * Read files one by one and merge data into 1 big file
+	 * Read files one by one and put data in records
 	 * 
 	 * @param files
 	 *            Files to read
@@ -99,9 +86,23 @@ public class CSVFactory {
 				f = files[i];
 				System.out.println("Reading file: " + f.getAbsolutePath());
 				reader = new CSVReader(new FileReader(f), SEPERATOR);
-				System.out.println("Merging...");
-				readFile(reader);
+				
+				
+				String[] s;
+				// pass
+				reader.readNext(); // Start line
+				// pass
+				reader.readNext(); // Header lines
+
+				s = reader.readNext(); // Field lines
+				//for each field line
+				while (s != null) {
+					records.add(new Record(s));
+					s = reader.readNext();
+				}
+				
 				reader.close();
+				//next file
 			} catch (IOException e) {
 				System.out.println("Problem reading " + f.getAbsolutePath());
 				//moving to next file..
