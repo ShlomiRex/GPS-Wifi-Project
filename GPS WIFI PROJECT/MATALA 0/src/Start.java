@@ -3,13 +3,18 @@ import java.text.ParseException;
 
 public class Start {
 
+	/**
+	 * data gathered by professor 
+	 */
+	private static final String PATH_FOLDER = "C:/Users/ShlomiPC/Desktop/data/28.10/";
+	private static final String PATH_FOLDER2 = "C:/Users/ShlomiPC/Desktop/wigle/";
+	private static final String PATH_OUT = 	"C:/Users/ShlomiPC/Desktop/";
+	
 	public static void main(String[] args) throws IOException, ParseException {
-		String folder = "C:/Users/ShlomiPC/Desktop/wigle/";
-		String outFolder = "C:/Users/ShlomiPC/Desktop/";
-		CSVFactory factory = new CSVFactory(folder, outFolder);
+		CSVFactory factory = new CSVFactory(PATH_FOLDER, PATH_OUT);
 		CSV csv = factory.csv;
-		String outPath = "C:/Users/ShlomiPC/Desktop/sortedByWifi.csv";
-		csv.sortByWifiSpeed(outPath);
+		csv.sortByWifiSpeed(PATH_OUT);
+		//csv.print1035To1100Records();
 	}
 
 }

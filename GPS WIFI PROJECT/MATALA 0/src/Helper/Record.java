@@ -28,10 +28,13 @@ public class Record extends ArrayList<Object>{
 		origionalLine = s;
 		line = buffLine(s);
 		//after record is created, create object array
-		convertStringArrayToObjectArray();
+		addToObjectArray();
 	}
 	
-	private void convertStringArrayToObjectArray() {
+	/**
+	 * Add the record String[] array to object[] array
+	 */
+	private void addToObjectArray() {
 		//MAC(0) , SSID(1) , Auth(2), Type(10) is string
 		//FirstSeen(3) is date
 		//Channel(4) to Acc(9) are float
@@ -56,7 +59,7 @@ public class Record extends ArrayList<Object>{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 				System.out.println("Failed to parse " + origionalLine[3] + " to date");
-				add(""); //add nothing
+				add(" "); //add empty string
 			}
 
 		}
@@ -70,6 +73,11 @@ public class Record extends ArrayList<Object>{
 		
 		//add type
 		add(origionalLine[10]);
+		
+		//check if any null
+//		for(int i = 0; i <= 10; i++)
+//			if(origionalLine[i] == null)
+//				System.out.println("i = " + i);
 	}
 
 

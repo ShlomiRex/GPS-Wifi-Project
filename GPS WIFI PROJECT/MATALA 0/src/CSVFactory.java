@@ -83,9 +83,9 @@ public class CSVFactory {
 	private void mergeFiles(CSVReader reader) throws IOException {
 		String[] s;
 		// pass
-		s = reader.readNext(); // Start line
+		reader.readNext(); // Start line
 		// pass
-		s = reader.readNext(); // Header lines
+		reader.readNext(); // Header lines
 
 		s = reader.readNext(); // Field lines
 		Record r;
