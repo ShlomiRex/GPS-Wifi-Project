@@ -6,7 +6,10 @@ public class Start {
 	public static void main(String[] args) throws IOException, ParseException {
 		String folder = "C:/Users/ShlomiPC/Desktop/wigle/";
 		String outFolder = "C:/Users/ShlomiPC/Desktop/";
-		new CSVFactory(folder, outFolder);
+		CSVFactory factory = new CSVFactory(folder, outFolder);
+		CSV csv = factory.csv;
+		String outPath = "C:/Users/ShlomiPC/Desktop/sortedByWifi.csv";
+		csv.sortByWifiSpeed(outPath);
 	}
 
 }

@@ -3,8 +3,6 @@ package Helper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Date;
 
 public class Record extends ArrayList<Object>{
@@ -36,14 +34,15 @@ public class Record extends ArrayList<Object>{
 	private void convertStringArrayToObjectArray() {
 		//MAC(0) , SSID(1) , Auth(2), Type(10) is string
 		//FirstSeen(3) is date
-		//Channel(4) to Acc(9) are int
+		//Channel(4) to Acc(9) are float
+		//Type(10) is string
 		
-		//add mac, ssid, auth first
+		//add mac, ssid, auth first(strings)
 		add(origionalLine[0]);
 		add(origionalLine[1]);
 		add(origionalLine[2]);
 		
-		//add first seen
+		//add first seen (date)
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM");
 		SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy/MM/dd HH:MM");
 		Date date;
@@ -61,7 +60,16 @@ public class Record extends ArrayList<Object>{
 			}
 
 		}
-		//TODO: Complete
+		//add 4 to 9
+		add(Float.parseFloat(origionalLine[4]));
+		add(Float.parseFloat(origionalLine[5]));
+		add(Float.parseFloat(origionalLine[6]));
+		add(Float.parseFloat(origionalLine[7]));
+		add(Float.parseFloat(origionalLine[8]));
+		add(Float.parseFloat(origionalLine[9]));
+		
+		//add type
+		add(origionalLine[10]);
 	}
 
 
@@ -79,6 +87,11 @@ public class Record extends ArrayList<Object>{
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param f An enum parameter from Record.Field that represents the chosen field
+	 * @return The object of the field.
+	 */
 	public Object get_Field(Field f) {
 		return get(f.column);
 	}
