@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import Helper.Record;
 import Helper.Records;
@@ -20,8 +21,15 @@ public class CSV {
 	 * 
 	 * @param outFolder Folder to output
 	 */
-	public void sortByWifiSpeed(String outFolder) {
-		records.sortByWifiSpeed(outFolder+OUT_NAME_SORTED);
+	public void sortBy_FirstSeen(String outFolder) {
+		File outFile = new File(outFolder+OUT_NAME_SORTED);
+		try {
+			records.sortBy_FirstSeen(outFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Problem writing to file.");
+		}
 	}
 
 	public void print() {

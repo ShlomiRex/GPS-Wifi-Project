@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Records do not contain: Wiggle line, Header line
@@ -25,12 +26,15 @@ public class Records extends ArrayList<Record> {
 		return get(i).origionalLine;
 	}
 	
+	
 	/**
 	 * 
-	 * @param outPath Full path including file path
+	 * @param file The file to write to the result
 	 */
-	public void sortByWifiSpeed(String outPath) {
+	public void sortBy_RSSI(File file) {
 		System.out.println("Sorting by RSSI...");
+		
+		//actual sort
 		sort(new Comparator<Record>() {
 
 			@Override
@@ -41,11 +45,9 @@ public class Records extends ArrayList<Record> {
 			}
 		});
 
-
-		File outFile = new File(outPath);
-		
+		//write to output file the result of sort
 		try {
-			PrintWriter pw = new PrintWriter(outFile);
+			PrintWriter pw = new PrintWriter(file);
 			//write wigle and header
 			writeToFile_WigleAndHeader(pw);
 			//write 10 best signals
@@ -58,6 +60,32 @@ public class Records extends ArrayList<Record> {
 		}
 
 	} //end sort
+	
+	/**
+	 * 
+	 * @param file The file to write to the result
+	 * @throws FileNotFoundException 
+	 */
+	public void sortBy_FirstSeen(File file) throws FileNotFoundException {
+		System.out.println("Sorting by Date and Time...");
+		
+		sort(new Comparator<Record>() {
+
+			@Override
+			public int compare(Record o1, Record o2) {
+				Date o1Date = (Date) o1.get_Field(Record.Field.FirstSeen);
+				Date o2Date = (Date) o2.get_Field(Record.Field.FirstSeen);
+				
+				return o2Date.compareTo(o1Date);
+			}
+		});
+		
+		//write to output file the result of sort
+		PrintWriter pw = new PrintWriter(file);
+		//write all records
+		writeToFile(pw);
+		pw.close();
+	}
 
 	public void print() {
 		System.out.println(Record.buffLine(wigle));
