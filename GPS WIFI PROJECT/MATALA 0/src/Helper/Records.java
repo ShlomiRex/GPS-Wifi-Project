@@ -14,6 +14,9 @@ import java.util.Comparator;
  */
 public class Records extends ArrayList<Record> {
 
+	public Record wigle;
+	public Record header;
+	
 	public Records() {
 		super();
 	}
@@ -28,7 +31,7 @@ public class Records extends ArrayList<Record> {
 	 */
 	public void sortByWifiSpeed(String outPath) {
 		System.out.println("Sorting by RSSI...");
-
+		
 		sort(new Comparator<Record>() {
 
 			@Override
@@ -53,4 +56,5 @@ public class Records extends ArrayList<Record> {
 		}
 
 	}
+
 }

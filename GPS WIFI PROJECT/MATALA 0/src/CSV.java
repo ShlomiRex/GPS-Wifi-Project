@@ -6,19 +6,11 @@ public class CSV {
 	private static final String OUT_NAME_SORTED = "sortedByWifi.csv";
 
 	/**
-	 * Original file (The merged 1 big file)
-	 */
-	private File file;
-
-	/**
 	 * 
-	 * @param origionalFile
-	 *            The merged 1 big file
 	 * @param records
 	 *            Records that get from CSV Factory
 	 */
-	public CSV(File origionalFile, Records records) {
-		this.file = origionalFile;
+	public CSV(Records records) {
 		this.records = records;
 	}
 

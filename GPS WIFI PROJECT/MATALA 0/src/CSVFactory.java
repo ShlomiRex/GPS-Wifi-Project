@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Vector;
 
 import Helper.DirectoryAndFileHelper;
 import Helper.Record;
@@ -33,17 +35,12 @@ public class CSVFactory {
 	public final static int FIELDS_LINE = 2;
 
 	// Writer to cvs text file.
-	private PrintWriter writer;
+	//private PrintWriter writer;
 	private Records records;
 	/**
 	 * Result of factory
 	 */
 	public CSV csv;
-	
-	/**
-	 * Header of the entier csv
-	 */
-	private String header;
 
 	/**
 	 * 
@@ -53,28 +50,21 @@ public class CSVFactory {
 	 * @throws ParseException
 	 */
 	public CSVFactory(String folder, String outFolder) throws IOException {
+		//Potential files to read from directory
 		File[] potentialFiles = DirectoryAndFileHelper.filesInFolder(folder);
+		//Actual files that will be read from directory
 		File[] validFiles = DirectoryAndFileHelper.findWigelFiles(potentialFiles);
 		records = new Records();
 
-		File out = new File(outFolder + OUTNAME);
-		writer = new PrintWriter(out);
+		//File out_MergedFile = new File(outFolder + OUTNAME);
+		//writer = new PrintWriter(out_MergedFile);
 		readFiles(validFiles);
 		System.out.println("Output path: " + outFolder + OUTNAME);
 		System.out.println("Records size = " + records.size());
-		csv = new CSV(out, records);
+		csv = new CSV(records);
 	}
 
-	/**
-	 * 
-	 * @param reader
-	 *            Reader of specific file
-	 * @param records
-	 *            To add data to records while merging
-	 * @throws IOException
-	 *             Problem reading the file
-	 */
-	private void mergeFiles(CSVReader reader) throws IOException {
+	private void readFile(CSVReader reader) throws IOException {
 		String[] s;
 		// pass
 		reader.readNext(); // Start line
@@ -82,13 +72,8 @@ public class CSVFactory {
 		reader.readNext(); // Header lines
 
 		s = reader.readNext(); // Field lines
-		Record r;
 		while (s != null) {
-			// write to merge file
-			r = new Record(s);
-			writer.println(r.line);
 			records.add(new Record(s));
-
 			s = reader.readNext();
 		}
 	}
@@ -105,60 +90,41 @@ public class CSVFactory {
 	 *             Writer problem
 	 */
 	private void readFiles(File[] files) throws IOException {
-		File f = null;
+		File f = files[0];
 		CSVReader reader;
-		f = files[0];
-		writeWigle(f);
-		writeHeader(f);
-
+		ArrayList<String[]> wigle_And_header = getWigleAndHeaderLines(f);
+		records.wigle = new Record(wigle_And_header.get(0));
+		records.header = new Record(wigle_And_header.get(1));
+		
 		for (int i = 0; i < files.length; i++) {
 			try {
 				f = files[i];
 				System.out.println("Reading file: " + f.getAbsolutePath());
 				reader = new CSVReader(new FileReader(f), SEPERATOR);
 				System.out.println("Merging...");
-				mergeFiles(reader);
-
+				readFile(reader);
+				reader.close();
 			} catch (IOException e) {
 				System.out.println("Problem reading " + f.getAbsolutePath());
-				//moving to next file
+				//moving to next file..
 			}
 		}
 	}
-
+	
 	/**
-	 * Write the wiggle line at the head of the file
-	 * @param f
-	 * @throws IOException 
-	 */
-	private void writeWigle(File f) throws IOException {
-		if (f == null)
-			return;
-		CSVReader reader = new CSVReader(new FileReader(f), SEPERATOR);
-		String[] s = reader.readNext();
-		header = Record.buffLine(s);
-		writer.println(header);
-		reader.close();
-	}
-
-	/**
-	 * This function is called once, when the readFiles() is called, it adds the
-	 * header line to csv
 	 * 
-	 * @param file
-	 *            First file
-	 * @param reader
+	 * @param f Not null file
+	 * @return [0] is line of wigle, [1] is line of header,
 	 * @throws IOException
 	 */
-	private final void writeHeader(File file) throws IOException {
-		if (file == null)
-			return;
-		CSVReader reader = new CSVReader(new FileReader(file), SEPERATOR);
-		reader.readNext();
-		String[] s = reader.readNext();
-		header = Record.buffLine(s);
-		writer.println(header);
+	private ArrayList<String[]> getWigleAndHeaderLines(File f) throws IOException {
+		CSVReader reader = new CSVReader(new FileReader(f), SEPERATOR);
+		String[] wigle = reader.readNext(); 
+		String[] header = reader.readNext();
 		reader.close();
+		ArrayList<String[]> result = new ArrayList<>();
+		result.add(wigle);
+		result.add(header);
+		return result;
 	}
-
 }
