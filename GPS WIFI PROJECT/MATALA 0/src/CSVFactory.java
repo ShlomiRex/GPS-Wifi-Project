@@ -114,7 +114,7 @@ public class CSVFactory {
 		CSVReader reader;
 		try {
 			f = files[0];
-			writeHeader(files[0]);
+			writeHeader(f);
 		} catch (IOException e1) {
 			System.out.println("Problem reading " + f.getAbsolutePath());
 			System.out.println("Cannot read header! Exiting");
