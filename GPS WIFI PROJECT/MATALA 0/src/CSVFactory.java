@@ -52,19 +52,13 @@ public class CSVFactory {
 	 * @throws IOException
 	 * @throws ParseException
 	 */
-	public CSVFactory(String folder, String outFolder) {
+	public CSVFactory(String folder, String outFolder) throws IOException {
 		File[] potentialFiles = DirectoryAndFileHelper.filesInFolder(folder);
 		File[] validFiles = DirectoryAndFileHelper.findWigelFiles(potentialFiles);
 		records = new Records();
 
 		File out = new File(outFolder + OUTNAME);
-		try {
-			writer = new PrintWriter(out);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.out.println("Problem with writer. Maybe check output path?");
-			return;
-		}
+		writer = new PrintWriter(out);
 		readFiles(validFiles);
 		System.out.println("Output path: " + outFolder + OUTNAME);
 		System.out.println("Records size = " + records.size());
@@ -104,22 +98,19 @@ public class CSVFactory {
 	 * 
 	 * @param files
 	 *            Files to read
+	 * @throws IOException 
 	 * @throws FileNotFoundException
 	 *             Writer problem
 	 * @throws UnsupportedEncodingException
 	 *             Writer problem
 	 */
-	private void readFiles(File[] files) {
+	private void readFiles(File[] files) throws IOException {
 		File f = null;
 		CSVReader reader;
-		try {
-			f = files[0];
-			writeHeader(f);
-		} catch (IOException e1) {
-			System.out.println("Problem reading " + f.getAbsolutePath());
-			System.out.println("Cannot read header! Exiting");
-			return;
-		} // Write header only once
+		f = files[0];
+		writeWigle(f);
+		writeHeader(f);
+
 		for (int i = 0; i < files.length; i++) {
 			try {
 				f = files[i];
@@ -130,8 +121,24 @@ public class CSVFactory {
 
 			} catch (IOException e) {
 				System.out.println("Problem reading " + f.getAbsolutePath());
+				//moving to next file
 			}
 		}
+	}
+
+	/**
+	 * Write the wiggle line at the head of the file
+	 * @param f
+	 * @throws IOException 
+	 */
+	private void writeWigle(File f) throws IOException {
+		if (f == null)
+			return;
+		CSVReader reader = new CSVReader(new FileReader(f), SEPERATOR);
+		String[] s = reader.readNext();
+		header = Record.buffLine(s);
+		writer.println(header);
+		reader.close();
 	}
 
 	/**

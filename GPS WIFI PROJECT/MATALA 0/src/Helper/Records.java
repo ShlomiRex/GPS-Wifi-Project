@@ -6,6 +6,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * Records do not contain: Wiggle line, Header line
+ * Records only stores the actual data, not wrappers
+ * @author ShlomiPC
+ *
+ */
 public class Records extends ArrayList<Record> {
 
 	public Records() {
