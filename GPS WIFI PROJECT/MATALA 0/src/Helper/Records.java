@@ -37,22 +37,23 @@ public class Records extends ArrayList<Record> {
 			public int compare(Record o1, Record o2) {
 				Float o1Speed = (Float) o1.get_Field(Record.Field.RSSI);
 				Float o2Speed = (Float) o2.get_Field(Record.Field.RSSI);
-				return o1Speed.compareTo(o2Speed);
+				return o2Speed.compareTo(o1Speed);
 			}
 		});
+
 
 		File outFile = new File(outPath);
 		try {
 			PrintWriter pw = new PrintWriter(outFile);
-			for (Record r : this) {
-				pw.println(r.line);
-			}
+			//write 10 best signals
+			for(int i = 0; i < 10; i++) 
+				pw.println(get(i).line);
 			pw.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 
-	}
+	} //end sort
 
 	public void print() {
 		System.out.println("Printing wigle and header...");
@@ -72,6 +73,26 @@ public class Records extends ArrayList<Record> {
 			System.out.println("["+i+"] RSSI: " + r.get_Field(Record.Field.RSSI));
 			i++;
 		}
+	}
+	
+	/**
+	 * Write to end of file 2 lines: Wigle and then header.
+	 * @param f
+	 * @throws FileNotFoundException
+	 */
+	public void writeToFile_WigleAndHeader(File f) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(f);
+		pw.println(Record.buffLine(wigle));
+		pw.println(Record.buffLine(header));
+		pw.close();
+	}
+	
+	public void writeToFile(File f) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(f);
+		writeToFile_WigleAndHeader(f);
+		for(Record r : this)
+			pw.println(r.line);
+		pw.close();
 	}
 
 }

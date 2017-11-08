@@ -15,7 +15,6 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class CSVFactory {
 
-	public final static String OUTNAME = "out.csv";
 	/**
 	 * Inside wigle file, sepearator can be ; or , and ect
 	 */
@@ -59,7 +58,6 @@ public class CSVFactory {
 		//File out_MergedFile = new File(outFolder + OUTNAME);
 		//writer = new PrintWriter(out_MergedFile);
 		readFiles(validFiles);
-		System.out.println("Output path: " + outFolder + OUTNAME);
 		System.out.println("Records size = " + records.size());
 		csv = new CSV(records);
 	}
