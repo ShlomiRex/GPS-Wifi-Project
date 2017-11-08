@@ -14,8 +14,8 @@ import java.util.Comparator;
  */
 public class Records extends ArrayList<Record> {
 
-	public Record wigle;
-	public Record header;
+	public String[] wigle;
+	public String[] header;
 	
 	public Records() {
 		super();
@@ -55,6 +55,12 @@ public class Records extends ArrayList<Record> {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void print() {
+		for(Record r : this) {
+			r.print();
+		}
 	}
 
 }

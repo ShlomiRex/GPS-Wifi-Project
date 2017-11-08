@@ -93,8 +93,8 @@ public class CSVFactory {
 		File f = files[0];
 		CSVReader reader;
 		ArrayList<String[]> wigle_And_header = getWigleAndHeaderLines(f);
-		records.wigle = new Record(wigle_And_header.get(0));
-		records.header = new Record(wigle_And_header.get(1));
+		records.wigle = wigle_And_header.get(0);
+		records.header = wigle_And_header.get(1);
 		
 		for (int i = 0; i < files.length; i++) {
 			try {

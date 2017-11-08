@@ -13,8 +13,8 @@ public class Start {
 	public static void main(String[] args) throws IOException, ParseException {
 		CSVFactory factory = new CSVFactory(PATH_FOLDER, PATH_OUT);
 		CSV csv = factory.csv;
+		//csv.print();
 		csv.sortByWifiSpeed(PATH_OUT);
-		//csv.print1035To1100Records();
 	}
 
 }
