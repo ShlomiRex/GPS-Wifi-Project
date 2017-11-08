@@ -31,15 +31,12 @@ public class Records extends ArrayList<Record> {
 	 */
 	public void sortByWifiSpeed(String outPath) {
 		System.out.println("Sorting by RSSI...");
-		
 		sort(new Comparator<Record>() {
 
 			@Override
 			public int compare(Record o1, Record o2) {
 				Float o1Speed = (Float) o1.get_Field(Record.Field.RSSI);
 				Float o2Speed = (Float) o2.get_Field(Record.Field.RSSI);
-				if(o1Speed >= 0 || o2Speed >= 0)
-					System.out.println("Speed 1 = " + o1Speed + " Speed 2 = " + o2Speed);
 				return o1Speed.compareTo(o2Speed);
 			}
 		});
@@ -58,8 +55,22 @@ public class Records extends ArrayList<Record> {
 	}
 
 	public void print() {
+		System.out.println("Printing wigle and header...");
+		System.out.println(Record.buffLine(wigle));
+		System.out.println(Record.buffLine(header));
+		System.out.println("Printing data....");
 		for(Record r : this) {
 			r.print();
+		}
+	}
+	
+	
+	public void printTestRSSI() {
+		int i = 0;
+		System.out.println(Record.Field.RSSI.column);
+		for(Record r : this) {
+			System.out.println("["+i+"] RSSI: " + r.get_Field(Record.Field.RSSI));
+			i++;
 		}
 	}
 
