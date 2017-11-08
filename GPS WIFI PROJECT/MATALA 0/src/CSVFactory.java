@@ -12,6 +12,7 @@ import Helper.DirectoryAndFileHelper;
 import Helper.Record;
 import Helper.Records;
 import au.com.bytecode.opencsv.CSVReader;
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class CSVFactory {
 
@@ -54,12 +55,20 @@ public class CSVFactory {
 		//Actual files that will be read from directory
 		File[] validFiles = DirectoryAndFileHelper.findWigelFiles(potentialFiles);
 		records = new Records();
-
+		
 		//File out_MergedFile = new File(outFolder + OUTNAME);
 		//writer = new PrintWriter(out_MergedFile);
 		readFiles(validFiles);
 		System.out.println("Records size = " + records.size());
 		csv = new CSV(records);
+	}
+	
+	public void foo() throws FileNotFoundException {
+		String filePath = "";
+		File file = new File(filePath);
+		PrintWriter pw = new PrintWriter(file);
+		CSVWriter csvWriter = new CSVWriter(pw, SEPERATOR);
+		//TODO: Use CSVWriter insted of @ShlomiPC code
 	}
 
 
