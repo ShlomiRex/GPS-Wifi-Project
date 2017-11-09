@@ -1,4 +1,4 @@
-package main;
+package CSV;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,9 +9,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import Helper.DirectoryAndFileHelper;
-import Helper.Record;
-import Helper.Records;
+import CSV.Helper.DirectoryAndFileHelper;
+import CSV.Helper.Record;
+import CSV.Helper.Records;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 

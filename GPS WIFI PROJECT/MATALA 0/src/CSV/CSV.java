@@ -1,8 +1,8 @@
-package main;
+package CSV;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import Helper.Records;
+import CSV.Helper.Records;
 
 public class CSV {
 	public Records records;
