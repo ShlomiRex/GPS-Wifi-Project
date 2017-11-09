@@ -1,15 +1,11 @@
 package Helper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Record extends ArrayList<Object>{
-
 
 	public enum Field {
 		MAC(0), SSID(1), AuthMode(2), FirstSeen(3), Channel(4),

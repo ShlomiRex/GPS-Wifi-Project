@@ -1,7 +1,7 @@
+package main;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import Helper.Record;
 import Helper.Records;
 
 public class CSV {
@@ -22,11 +22,11 @@ public class CSV {
 	 * @param outFolder Folder to output
 	 */
 	public void sortBy_FirstSeen(String outFolder) {
+		//TODO: Add predicate
 		File outFile = new File(outFolder+OUT_NAME_SORTED);
 		try {
 			records.sortBy_FirstSeen(outFile);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Problem writing to file.");
 		}
