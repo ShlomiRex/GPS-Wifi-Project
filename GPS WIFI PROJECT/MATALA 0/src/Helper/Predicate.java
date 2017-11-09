@@ -1,5 +1,5 @@
 package Helper;
 
-public class Predicate {
-
+public interface Predicate<T> {
+	boolean test(T t);
 }
