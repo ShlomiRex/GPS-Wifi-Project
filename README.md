@@ -4,6 +4,8 @@ Collaborators: Amit , Shiler, Shlomi
 
 To edit this file read https://help.github.com/articles/basic-writing-and-formatting-syntax/
 
+# NOTE: THIS FILE IS OUTDATED.
+
 # TODO List by priority
 ##### 0. Decide which file in G MON to read
 ##### 1. Create the application(Android application AND desktop application)
