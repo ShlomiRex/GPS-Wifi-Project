@@ -7,15 +7,15 @@ To edit this file read https://help.github.com/articles/basic-writing-and-format
 # NOTE: THIS FILE IS OUTDATED.
 
 # KEY NOTES
-Record - A line from CSV
-Records - Collection of Record
-Factory - Class designed to get X and the product will by Y
-Start - A class with main function
-DirectoryAndFileHelper - Class designed to help with I/O file or directory stuff
-Placemark - A KML element with name, description and point elements in it
-Placemarks - A collection of Placemark
-PlacemarkPrinter - A class to help print Placemark to file
-KMLPrinter - A class to help print KML to file
+1. Record - A line from CSV
+2. Records - Collection of Record
+3. Factory - Class designed to get X and the product will by Y
+4. Start - A class with main function
+5. DirectoryAndFileHelper - Class designed to help with I/O file or directory stuff
+6. Placemark - A KML element with name, description and point elements in it
+7. Placemarks - A collection of Placemark
+8. PlacemarkPrinter - A class to help print Placemark to file
+9. KMLPrinter - A class to help print KML to file
 
 
 # TODO List by priority
