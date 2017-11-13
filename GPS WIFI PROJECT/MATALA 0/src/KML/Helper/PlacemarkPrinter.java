@@ -15,10 +15,15 @@ public abstract class PlacemarkPrinter {
 	 * @param name
 	 */
 	public static String getCDATAWrapper(String name) {
-		return "<![CDATA["+ name + "]]>";
+		return "<![CDATA["+ name +"]]>";
 	}
 
-	public static void printName(PrintWriter printWriter, Record record) {
+	/**
+	 * Prints name element to placemark and the data is the SSID of the record.
+	 * @param printWriter
+	 * @param record
+	 */
+	public static void printNameElement_SSID(PrintWriter printWriter, Record record) {
 		printWriter.println("<name>");
 		String name =  (String) record.get_Field(Record.Field.SSID);
 		String nameElementString = getCDATAWrapper(name); //wrap name in element string
@@ -26,6 +31,11 @@ public abstract class PlacemarkPrinter {
 		printWriter.println("</name>");
 	}
 
+	/**
+	 * Prints the description of the placemark.
+	 * @param printWriter
+	 * @param record
+	 */
 	public static void printDescription(PrintWriter printWriter, Record record) {
 		
 		//element open
@@ -49,6 +59,11 @@ public abstract class PlacemarkPrinter {
 		
 	}
 
+	/**
+	 * Prints the point element that contains only coordinants.
+	 * @param printWriter
+	 * @param record
+	 */
 	public static void printPoint(PrintWriter printWriter, Record record) {
 		printWriter.println("<Point>");
 		Float latitude = (Float) record.get_Field(Record.Field.Lat);

@@ -1,33 +1,31 @@
 package KML.Helper;
 import java.io.PrintWriter;
 
-import CSV.Helper.Record;
-
+/**
+ * Helper class to print strings to kml file.
+ * @author ShlomiPC
+ *
+ */
 public abstract class KMLPrinter {
 	/**
-	 * Prints all the KML.
+	 * Prints all placemarks to writer.
 	 * @param printWriter
+	 * @param placemarks
 	 */
-	public static void print(PrintWriter printWriter, Placemarks placemarks) {
+	public static void printPlacemarks(PrintWriter printWriter, Placemarks placemarks) {
 		//header and kml
-		KMLPrinter.printKMLHeader(printWriter);
+		String s1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+		printWriter.println(s1);
+		
+		//kml element open
+		String s2 = "<kml xmlns=\"http://www.opengis.net/kml/2.2\">";
+		printWriter.println(s2);
 		
 		//document
 		KMLPrinter.printKMLDocument(printWriter, placemarks);
-		//close document
-		printWriter.println("</Document>");
 		
-		
-		//close header
-		System.out.println("printing kml");
+		//kml element close
 		printWriter.println("</kml>");
-	}
-	
-	private static void printKMLHeader(PrintWriter printWriter) {
-		String s1 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-		String s2 = "<kml xmlns=\"http://www.opengis.net/kml/2.2\">";
-		printWriter.println(s1);
-		printWriter.println(s2);
 	}
 	
 	private static void printKMLDocument(PrintWriter printWriter, Placemarks placemarks) {

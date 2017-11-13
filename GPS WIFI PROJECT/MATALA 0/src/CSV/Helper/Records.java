@@ -30,8 +30,10 @@ public class Records extends ArrayList<Record> {
 	/**
 	 * 
 	 * @param file The file to write to the result
+	 * @param sortBest10 
+	 * @throws FileNotFoundException 
 	 */
-	public void sortBy_RSSI(File file) {
+	public Records sortBy_RSSI(File file, boolean sortBest10) throws FileNotFoundException {
 		System.out.println("Sorting by RSSI...");
 		
 		//actual sort
@@ -46,18 +48,25 @@ public class Records extends ArrayList<Record> {
 		});
 
 		//write to output file the result of sort
-		try {
-			PrintWriter pw = new PrintWriter(file);
-			//write wigle and header
-			writeToFile_WigleAndHeader(pw);
-			//write 10 best signals
-			for(int i = 0; i < 10; i++) 
+		PrintWriter pw = new PrintWriter(file);
+		//write wigle and header
+		writeToFile_WigleAndHeader(pw);
+
+		if(sortBest10) {
+			//write 10 best records
+			for(int i = 0; i < 10; i++) {
 				pw.println(get(i).line);
-			pw.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			}
 		}
+		else {
+			//write ALL records
+			for(Record record : this) {
+				pw.println(record.line);
+			}
+		}
+		pw.close();
+		
+		return this;
 
 	} //end sort
 	
@@ -66,7 +75,7 @@ public class Records extends ArrayList<Record> {
 	 * @param file The file to write to the result
 	 * @throws FileNotFoundException 
 	 */
-	public void sortBy_FirstSeen(File file) throws FileNotFoundException {
+	public Records sortBy_FirstSeen(File file) throws FileNotFoundException {
 		System.out.println("Sorting by Date and Time...");
 		
 		sort(new Comparator<Record>() {
@@ -82,9 +91,12 @@ public class Records extends ArrayList<Record> {
 		
 		//write to output file the result of sort
 		PrintWriter pw = new PrintWriter(file);
+		//write wigle and header
+		writeToFile_WigleAndHeader(pw);
 		//write all records
 		writeToFile(pw);
 		pw.close();
+		return this;
 	}
 
 	public void print() {

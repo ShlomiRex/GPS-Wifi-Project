@@ -45,23 +45,28 @@ public class CSVFactory {
 
 	/**
 	 * 
-	 * @param file
-	 *            Read this CSV/Text file
-	 * @throws IOException
-	 * @throws ParseException
+	 * @param folder Read files in this folder.
+	 * @throws Exception
 	 */
-	public CSVFactory(String folder, String outFolder) throws IOException {
+	public CSVFactory(String folder)  {
 		//Potential files to read from directory
 		File[] potentialFiles = DirectoryAndFileHelper.filesInFolder(folder);
 		//Actual files that will be read from directory
-		File[] validFiles = DirectoryAndFileHelper.findWigelFiles(potentialFiles);
-		records = new Records();
-		
-		//File out_MergedFile = new File(outFolder + OUTNAME);
-		//writer = new PrintWriter(out_MergedFile);
-		readFiles(validFiles);
-		System.out.println("Records size = " + records.size());
-		csv = new CSV(records);
+		File[] validFiles;
+		try {
+			validFiles = DirectoryAndFileHelper.findWigelFiles(potentialFiles);
+			records = new Records();
+			
+			//File out_MergedFile = new File(outFolder + OUTNAME);
+			//writer = new PrintWriter(out_MergedFile);
+			readFiles(validFiles);
+			System.out.println("Records size = " + records.size());
+			csv = new CSV(records);
+		} catch (Exception e) {
+			System.out.println("No files to read! Folder: " + folder);
+			return;
+		}
+
 	}
 	
 	public void foo() throws FileNotFoundException {

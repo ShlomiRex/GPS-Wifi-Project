@@ -4,21 +4,24 @@ import java.io.PrintWriter;
 
 import CSV.Helper.Record;
 
+/**
+ * An object that represents a point on the globe.
+ * @author ShlomiPC
+ *
+ */
 public class Placemark {
 	
-	
+	/**
+	 * The record of CSV file that represents this class.
+	 */
 	private Record record;
 	
-	/**
-	 * 
-	 * @param line Line of csv
-	 */
 	public Placemark(Record record) {
 		this.record = record;
 	}
 
 	/**
-	 * Print a placemark to printwriter.
+	 * Write a placemark to writer.
 	 * @param printWriter
 	 */
 	public void print(PrintWriter printWriter) {
@@ -26,7 +29,7 @@ public class Placemark {
 		printWriter.println("<Placemark>");
 		
 		//print name element
-		PlacemarkPrinter.printName(printWriter, record);
+		PlacemarkPrinter.printNameElement_SSID(printWriter, record);
 		
 		//print description
 		PlacemarkPrinter.printDescription(printWriter, record);

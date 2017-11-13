@@ -11,11 +11,10 @@ public class Start {
 	 * data gathered by professor 
 	 */
 	private static final String CSV_FOLDER_PATH_IN = "C:/Users/ShlomiPC/Desktop/data/28.10/";
-	private static final String CSV_FOLDER_PATH_OUT = "C:/Users/ShlomiPC/Desktop/";
 	private static final String KML_FILE_PATH_OUT = "C:/Users/ShlomiPC/Desktop/out.kml";
 	
-	public static void main(String[] args) throws IOException {
-		CSVFactory csvFactory = new CSVFactory(CSV_FOLDER_PATH_IN, CSV_FOLDER_PATH_OUT);
+	public static void main(String[] args) throws Exception {
+		CSVFactory csvFactory = new CSVFactory(CSV_FOLDER_PATH_IN);
 		CSV csv = csvFactory.csv; //get csv
 		
 		//create kml factory given csv

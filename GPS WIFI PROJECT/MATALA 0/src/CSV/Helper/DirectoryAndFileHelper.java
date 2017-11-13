@@ -1,6 +1,7 @@
 package CSV.Helper;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -17,11 +18,15 @@ public abstract class DirectoryAndFileHelper {
 	 * @param potentialFiles
 	 *            All files to check
 	 * @return Wigle csv files
+	 * @throws Exception 
 	 */
-	public static File[] findWigelFiles(File[] potentialFiles) {
+	public static File[] findWigelFiles(File[] potentialFiles) throws IOException {
 		// if contains WigleWifi at the start of file
 		ArrayList<File> result = new ArrayList<>();
 		String extension;
+		if(potentialFiles ==  null || potentialFiles.length == 0)
+			throw new IOException("No files to convert!");
+		
 		for (File f : potentialFiles) {
 			if(f == null)
 				continue;
@@ -47,6 +52,7 @@ public abstract class DirectoryAndFileHelper {
 	 */
 	private static boolean isHeaderWigle(File f) {
 		//TODO: Complete
+		
 		return true;
 	}
 
