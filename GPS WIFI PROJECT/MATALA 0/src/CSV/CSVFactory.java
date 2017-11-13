@@ -3,17 +3,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Vector;
-
 import CSV.Helper.DirectoryAndFileHelper;
 import CSV.Helper.Record;
 import CSV.Helper.Records;
 import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class CSVFactory {
 
@@ -68,15 +63,6 @@ public class CSVFactory {
 		}
 
 	}
-	
-	public void foo() throws FileNotFoundException {
-		String filePath = "";
-		File file = new File(filePath);
-		PrintWriter pw = new PrintWriter(file);
-		CSVWriter csvWriter = new CSVWriter(pw, SEPERATOR);
-		//TODO: Use CSVWriter insted of @ShlomiPC code
-	}
-
 
 	/**
 	 * Read files one by one and put data in records
