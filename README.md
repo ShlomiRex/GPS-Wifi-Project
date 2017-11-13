@@ -6,6 +6,18 @@ To edit this file read https://help.github.com/articles/basic-writing-and-format
 
 # NOTE: THIS FILE IS OUTDATED.
 
+# KEY NOTES
+Record - A line from CSV
+Records - Collection of Record
+Factory - Class designed to get X and the product will by Y
+Start - A class with main function
+DirectoryAndFileHelper - Class designed to help with I/O file or directory stuff
+Placemark - A KML element with name, description and point elements in it
+Placemarks - A collection of Placemark
+PlacemarkPrinter - A class to help print Placemark to file
+KMLPrinter - A class to help print KML to file
+
+
 # TODO List by priority
 ##### 0. Decide which file in G MON to read
 ##### 1. Create the application(Android application AND desktop application)
