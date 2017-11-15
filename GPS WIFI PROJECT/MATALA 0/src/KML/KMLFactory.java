@@ -1,4 +1,5 @@
 package KML;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import CSV.CSV;
 public class KMLFactory {
 
 	private Placemarks placemarks;
-	
 
 	public KMLFactory(CSV csv) {
 		placemarks = new Placemarks(csv.records);
@@ -20,13 +20,14 @@ public class KMLFactory {
 
 	/**
 	 * 
-	 * @param outFile Generate the KML file.
-	 * @throws IOException 
+	 * @param outFile
+	 *            Generate the KML file.
+	 * @throws IOException
 	 */
 	public void generateKML(File outFile) throws IOException {
 		System.out.println("Generating kml...");
-		//Very important that PrintWriter will have auto flushing! 
-		//that was our problem in writing but now everything works
+		// Very important that PrintWriter will have auto flushing!
+		// that was our problem in writing but now everything works
 		PrintWriter printWriter = new PrintWriter(new FileWriter(outFile), true);
 		KMLPrinter.printPlacemarks(printWriter, placemarks);
 		System.out.println("KML file: " + outFile.getAbsolutePath());
