@@ -59,7 +59,7 @@ public class CSV {
 	public void sortBy_Location(String outFolder, GeoPoint topLeft, GeoPoint bottomRight) throws FileNotFoundException {
 		String pointsString = topLeft.toString() + bottomRight.toString();
 		System.out.println("Sorting by location: " + pointsString);
-		//
+		
 		File outFile = new File(outFolder + "sortedBy_Location"+pointsString+".csv");
 		PrintWriter pw = new PrintWriter(outFile);
 		
