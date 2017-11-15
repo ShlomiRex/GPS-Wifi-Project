@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import CSV.Helper.Record;
-import CSV.Helper.Record.GeoPoint;
-import CSV.Helper.Records;
+import CSV.Record.GeoPoint;
 
 public class CSV {
 	public Records records;

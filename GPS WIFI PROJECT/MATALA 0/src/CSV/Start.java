@@ -1,6 +1,6 @@
 package CSV;
 
-import CSV.Helper.Record.GeoPoint;
+import CSV.Record.GeoPoint;
 
 public class Start {
 

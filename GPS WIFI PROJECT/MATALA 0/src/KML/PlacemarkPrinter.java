@@ -1,8 +1,8 @@
-package KML.Helper;
+package KML;
 
 import java.io.PrintWriter;
 
-import CSV.Helper.Record;
+import CSV.Record;
 
 public abstract class PlacemarkPrinter {
 	/**

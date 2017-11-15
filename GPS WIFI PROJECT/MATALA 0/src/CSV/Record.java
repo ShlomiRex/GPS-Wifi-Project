@@ -1,4 +1,4 @@
-package CSV.Helper;
+package CSV;
 
 import java.awt.Point;
 import java.text.ParseException;

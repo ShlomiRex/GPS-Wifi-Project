@@ -1,9 +1,9 @@
-package KML.Helper;
+package KML;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import CSV.Helper.Record;
-import CSV.Helper.Records;
+import CSV.Record;
+import CSV.Records;
 
 /**
  * A collection of place marks.

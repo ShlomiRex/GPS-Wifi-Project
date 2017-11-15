@@ -1,4 +1,4 @@
-package CSV.Helper;
+package CSV;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 
-import CSV.Helper.Record.Field;
-import CSV.Helper.Record.GeoPoint;
+import CSV.Record.Field;
+import CSV.Record.GeoPoint;
 
 public class Records extends ArrayList<Record> {
 

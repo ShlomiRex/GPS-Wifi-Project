@@ -1,4 +1,4 @@
-package CSV.Helper;
+package CSV;
 
 import java.io.File;
 import java.io.IOException;

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import CSV.CSV;
-import KML.Helper.KMLPrinter;
-import KML.Helper.Placemarks;
 
 /**
  * Factory which its final product is KML file.
