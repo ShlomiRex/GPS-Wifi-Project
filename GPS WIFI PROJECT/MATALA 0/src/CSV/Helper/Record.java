@@ -1,9 +1,12 @@
 package CSV.Helper;
 
+import java.awt.Point;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import javax.swing.LayoutFocusTraversalPolicy;
 
 public class Record extends ArrayList<Object>{
 
@@ -18,21 +21,23 @@ public class Record extends ArrayList<Object>{
 		}
 	}
 	
+	/**
+	 * A string which represents lineAsArrayOfStrings with comma seperating string objects.
+	 */
 	public String line;
-	public String[] origionalLine;
+	public String[] lineAsArrayOfStrings;
 
-	public Record(String[] s) {
+	/**
+	 * 
+	 * @param s An array of strings representing the CSV line. (Each element is 1 column)
+	 * @throws ParseException 
+	 */
+	public Record(String[] s) throws ParseException {
 		super();
-		origionalLine = s;
-		line = buffLine(s);
+		lineAsArrayOfStrings = s;
+		line = getFullString(s);
 		//after record is created, create object array
-		try {
-			addToObjectArray();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			
-		}
+		addToObjectArray();
 	}
 	
 	/**
@@ -46,27 +51,27 @@ public class Record extends ArrayList<Object>{
 		//Type(10) is string
 		
 		//add mac, ssid, auth first(strings)
-		add(origionalLine[0]);
-		add(origionalLine[1]);
-		add(origionalLine[2]);
+		add(lineAsArrayOfStrings[0]);
+		add(lineAsArrayOfStrings[1]);
+		add(lineAsArrayOfStrings[2]);
 		
 		//add first seen (date)
 		//SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:MM");
 		//SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy/MM/dd HH:MM");
 		SimpleDateFormat formatter3 = new SimpleDateFormat("yyyy/MM/dd HH:MM");
-		Date date = formatter3.parse(origionalLine[3]);
+		Date date = formatter3.parse(lineAsArrayOfStrings[3]);
 		add(date);
 
-		//add 4 to 9
-		add(Float.parseFloat(origionalLine[4]));
-		add(Float.parseFloat(origionalLine[5]));
-		add(Float.parseFloat(origionalLine[6]));
-		add(Float.parseFloat(origionalLine[7]));
-		add(Float.parseFloat(origionalLine[8]));
-		add(Float.parseFloat(origionalLine[9]));
+		//add 4 to 9 floats (not nececeraly float)
+		add(Float.parseFloat(lineAsArrayOfStrings[4]));
+		add(Float.parseFloat(lineAsArrayOfStrings[5]));
+		add(Float.parseFloat(lineAsArrayOfStrings[6]));
+		add(Float.parseFloat(lineAsArrayOfStrings[7]));
+		add(Float.parseFloat(lineAsArrayOfStrings[8]));
+		add(Float.parseFloat(lineAsArrayOfStrings[9]));
 		
 		//add type
-		add(origionalLine[10]);
+		add(lineAsArrayOfStrings[10]);
 		
 		//check if any null
 //		for(int i = 0; i <= 10; i++)
@@ -78,9 +83,11 @@ public class Record extends ArrayList<Object>{
 	/**
 	 * 
 	 * @param stringArr Array of strings
-	 * @return String with each object of s is seperated by comma
+	 * @return String with each object of s is seperated by comma.
+	 * 			<br>Example: S=["Hello","World"]
+	 * 			Then return: "Hello,World"
 	 */
-	public static String buffLine(String[] s) {
+	public static String getFullString(String[] s) {
 		String result = "";
 		for(int i = 0; i < s.length; i++) {
 			result += s[i];
@@ -104,6 +111,31 @@ public class Record extends ArrayList<Object>{
 	public void print() {
 		System.out.println(line);
 	}
+
+	public static class GeoPoint {
+		public Float latitude, longtitude;
+		
+		public GeoPoint(Float latitude, Float longtitude) {
+			this.latitude = latitude;
+			this.longtitude = longtitude;
+		}
+		
+		public GeoPoint(float latitude, float longtitude) {
+			this.latitude = latitude;
+			this.longtitude = longtitude;
+		}
+		
+		public GeoPoint(double latitude, double longtitude) {
+			this.latitude = (float) latitude;
+			this.longtitude = (float) longtitude;
+		}
+		
+		@Override
+		public String toString() {
+			return "("+latitude+","+longtitude+")";
+		}
+	}//GeoPoint class
+	
 
 	
 }

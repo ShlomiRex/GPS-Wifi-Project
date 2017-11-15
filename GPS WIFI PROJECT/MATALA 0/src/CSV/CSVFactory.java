@@ -62,6 +62,7 @@ public class CSVFactory {
 			return;
 		}
 
+		System.out.println("CSV Factory finished production.");
 	}
 
 	/**
@@ -104,7 +105,7 @@ public class CSVFactory {
 				
 				reader.close();
 				//next file
-			} catch (IOException e) {
+			} catch (Throwable e) {
 				System.out.println("Problem reading " + f.getAbsolutePath());
 				//moving to next file..
 			}
