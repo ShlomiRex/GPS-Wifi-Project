@@ -1,4 +1,4 @@
-package CSV.Helper;
+package CSV;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,28 +18,28 @@ public abstract class DirectoryAndFileHelper {
 	 * @param potentialFiles
 	 *            All files to check
 	 * @return Wigle csv files
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static File[] findWigelFiles(File[] potentialFiles) throws IOException {
 		// if contains WigleWifi at the start of file
 		ArrayList<File> result = new ArrayList<>();
 		String extension;
-		if(potentialFiles ==  null || potentialFiles.length == 0)
+		if (potentialFiles == null || potentialFiles.length == 0)
 			throw new IOException("No files to convert!");
-		
+
 		for (File f : potentialFiles) {
-			if(f == null)
+			if (f == null)
 				continue;
 			extension = getFileExtension(f);
-			//check extension
+			// check extension
 			if (extension.equals("csv"))
 				result.add(f);
 
-			if(! isHeaderWigle(f))
+			if (!isHeaderWigle(f))
 				continue;
 		}
 		File[] result2 = new File[result.size()];
-		for(int i = 0; i < result2.length; i++) {
+		for (int i = 0; i < result2.length; i++) {
 			result2[i] = result.get(i);
 		}
 		return result2;
@@ -47,12 +47,13 @@ public abstract class DirectoryAndFileHelper {
 
 	/**
 	 * Check if file starts with Wigle string
+	 * 
 	 * @param f
 	 * @return
 	 */
 	private static boolean isHeaderWigle(File f) {
-		//TODO: Complete
-		
+		// TODO: Complete
+
 		return true;
 	}
 
