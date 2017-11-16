@@ -8,6 +8,7 @@ public class CSV {
 	public Records records;
 	private static final String OUT_NAME_SORTED = "sortedByWifi.csv";
 
+	//what's up shlomy
 	/**
 	 * 
 	 * @param records
