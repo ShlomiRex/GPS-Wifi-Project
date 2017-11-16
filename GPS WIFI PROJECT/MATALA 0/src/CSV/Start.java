@@ -14,11 +14,11 @@ public class Start {
 		CSVFactory factory = new CSVFactory(PATH_FOLDER);
 		CSV csv = factory.csv;
 		// csv.sortBy_FirstSeen(DESKTOP_PATH); //works
-		// csv.sortBy_RSSI(DESKTOP_PATH, true); //works
+		 csv.sortBy_RSSI(DESKTOP_PATH, true); //works
 
-		GeoPoint topLeft = new GeoPoint(32.75128, 34.502776);
-		GeoPoint bottomRight = new GeoPoint(32.051869, 34.524945);
+		GeoPoint topLeft = new GeoPoint(10, 10);
+		GeoPoint bottomRight = new GeoPoint(50, 50);
 
-		csv.sortBy_Location(DESKTOP_PATH, topLeft, bottomRight);
+		//csv.sortBy_Location(DESKTOP_PATH, topLeft, bottomRight);
 	}
 }

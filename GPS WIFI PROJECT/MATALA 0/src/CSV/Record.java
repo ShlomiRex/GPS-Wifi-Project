@@ -87,6 +87,8 @@ public class Record extends ArrayList<Object> {
 	 * 		Example: S=["Hello","World"] Then return: "Hello,World"
 	 */
 	public static String getFullString(String[] s) {
+		if(s == null)
+			return null;
 		String result = "";
 		for (int i = 0; i < s.length; i++) {
 			result += s[i];

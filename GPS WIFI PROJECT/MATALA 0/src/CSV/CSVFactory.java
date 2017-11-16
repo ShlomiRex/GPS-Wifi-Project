@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -79,9 +80,10 @@ public class CSVFactory {
 	private void readFiles(File[] files) throws IOException {
 		File f = files[0];
 		CSVReader reader;
+		//TODO: Problem here!
 		ArrayList<String[]> wigle_And_header = getWigleAndHeaderLines(f);
-		records.wigle = wigle_And_header.get(0);
-		records.header = wigle_And_header.get(1);
+		records.setWigle(wigle_And_header.get(0));
+		records.setHeader(wigle_And_header.get(1));
 
 		for (int i = 0; i < files.length; i++) {
 			try {
@@ -118,7 +120,8 @@ public class CSVFactory {
 	 * @return [0] is line of wigle, [1] is line of header,
 	 * @throws IOException
 	 */
-	private ArrayList<String[]> getWigleAndHeaderLines(File f) throws IOException {
+	static ArrayList<String[]> getWigleAndHeaderLines(File f) throws IOException {
+		//TODO: Problem here!
 		CSVReader reader = new CSVReader(new FileReader(f), SEPERATOR);
 		String[] wigle = reader.readNext();
 		String[] header = reader.readNext();

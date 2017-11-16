@@ -1,6 +1,8 @@
 package CSV;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,9 +14,15 @@ import CSV.Record.GeoPoint;
 
 public class Records extends ArrayList<Record> {
 
-	public String[] wigle;
-	public String[] header;
+	private String[] wigle;
+	private String[] header;
 
+	public Records(String[] wigle, String[] header) {
+		super();
+		this.wigle = wigle;
+		this.header = header;
+	}
+	
 	public Records() {
 		super();
 	}
@@ -53,10 +61,19 @@ public class Records extends ArrayList<Record> {
 		 *            Top left geo point.
 		 * @param bottomRight
 		 *            Bottom right geo point.
+		 * @throws IOException 
 		 */
-		public static void By_Location(PrintWriter pw, Records records, GeoPoint topLeft, GeoPoint bottomRight)
-				throws FileNotFoundException {
+		public static void By_Location(File csvFile, Records records, GeoPoint topLeft, GeoPoint bottomRight)throws IOException {
+			//ArrayList<String[]> wigleAndHeader = CSVFactory.getWigleAndHeaderLines(csvFile);
 			Records recordsContainingOnlyPointsInsideRectangle = new Records();
+			//recordsContainingOnlyPointsInsideRectangle.wigle = wigleAndHeader.get(0);
+			//recordsContainingOnlyPointsInsideRectangle.header = wigleAndHeader.get(1);
+			
+			//System.out.println(recordsContainingOnlyPointsInsideRectangle.wigle);;
+			
+			PrintWriter pw = new PrintWriter(csvFile);
+			
+			//TODO: Create class of wigle and header 
 			Float recordLat, recordLon;
 			for (Record record : records) {
 				recordLat = (Float) record.get_Field(Field.Lat);
@@ -64,7 +81,6 @@ public class Records extends ArrayList<Record> {
 				if (recordLat >= topLeft.latitude && recordLat <= bottomRight.latitude
 						&& recordLon >= topLeft.longtitude && recordLon <= bottomRight.longtitude) {
 					recordsContainingOnlyPointsInsideRectangle.add(record);
-					System.out.println("Adding");
 				}
 			}
 
@@ -153,7 +169,6 @@ public class Records extends ArrayList<Record> {
 		 *            Records class to read data from.
 		 */
 		public static void writeWigleAndHeader(PrintWriter pw, Records recordsToReadFrom) {
-			System.out.println("Wigle = " + Arrays.toString(recordsToReadFrom.wigle));
 			String w = Record.getFullString(recordsToReadFrom.wigle);
 			String h = Record.getFullString(recordsToReadFrom.header);
 			pw.println(w);
@@ -176,5 +191,13 @@ public class Records extends ArrayList<Record> {
 		}
 
 	}// Writer class
+
+	public void setWigle(String[] strings) {
+		this.wigle = strings;
+	}
+
+	public void setHeader(String[] strings) {
+		this.header = strings;
+	}
 
 } // Records class

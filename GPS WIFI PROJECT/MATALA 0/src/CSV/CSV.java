@@ -2,12 +2,15 @@ package CSV;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import CSV.Record.GeoPoint;
 
 public class CSV {
 	public Records records;
+	public ArrayList<File> filesInCSV;
 
 	/**
 	 * 
@@ -16,6 +19,7 @@ public class CSV {
 	 */
 	public CSV(Records records) {
 		this.records = records;
+		filesInCSV = new ArrayList<>();
 	}
 
 	/**
@@ -56,14 +60,13 @@ public class CSV {
 		System.out.println("Sorted file at: " + outFile.getAbsolutePath());
 	}
 
-	public void sortBy_Location(String outFolder, GeoPoint topLeft, GeoPoint bottomRight) throws FileNotFoundException {
+	public void sortBy_Location(String outFolder, GeoPoint topLeft, GeoPoint bottomRight) throws IOException {
 		String pointsString = topLeft.toString() + bottomRight.toString();
 		System.out.println("Sorting by location: " + pointsString);
 
 		File outFile = new File(outFolder + "sortedBy_Location" + pointsString + ".csv");
-		PrintWriter pw = new PrintWriter(outFile);
 
-		Records.Sort.By_Location(pw, records, topLeft, bottomRight);
+		Records.Sort.By_Location(outFile, records, topLeft, bottomRight);
 
 		System.out.println("Sorted file at: " + outFile.getAbsolutePath());
 	}
