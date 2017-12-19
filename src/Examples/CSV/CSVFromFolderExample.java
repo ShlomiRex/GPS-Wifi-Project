@@ -1,11 +1,10 @@
 package Examples.CSV;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
-import CSV.CSV;
-import CSV.CSVFactory;
+import CSVPckg.CSV;
+import CSVPckg.CSVFactory;
 import Examples.IOUser;
 import Examples.Paths;
 

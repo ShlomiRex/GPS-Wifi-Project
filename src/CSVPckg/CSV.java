@@ -1,17 +1,16 @@
-package CSV;
+package CSVPckg;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import CSV.Record.Field;
-import CSV.Record.GeoPoint;
+import CSVPckg.Record.Field;
+import CSVPckg.Record.GeoPoint;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -22,7 +21,7 @@ public class CSV {
 	public CSVHeaders headers = null;
 
 	public CSV(File fileToConvert) throws Throwable {
-		System.out.println("Reading file: " + fileToConvert.getAbsolutePath());
+		System.out.println("Creating CSV : Reading file: " + fileToConvert.getAbsolutePath());
 		if(fileToConvert == null)
 			throw new NullPointerException("File to convert is null.");
 
@@ -40,7 +39,7 @@ public class CSV {
 
 		setup(lines);
 
-		System.out.println("Reading done.");
+		System.out.println("Reading done. CSV created.");
 	}
 
 	/**
@@ -78,12 +77,12 @@ public class CSV {
 			}
 		}
 
-		checkIfFileHasWigleHeader: {
-			if(! lines.get(0)[0].contains("Wigle")) {
-				System.out.println("Not wigle");
-				throw new Throwable("This is not valid wigle file.");
-			}
-		}
+//		checkIfFileHasWigleHeader: {
+//			if(! lines.get(0)[0].contains("Wigle")) {
+//				System.out.println("Not wigle");
+//				throw new Throwable("This is not valid wigle file.");
+//			}
+//		}
 
 		otherChecks: {
 			if(lines.size() <= 1)
@@ -142,7 +141,6 @@ public class CSV {
 		System.out.println("Sorting by location: " + pointsString);
 
 		File outFile = new File(outFolder + "sortedBy_Location" + pointsString + ".csv");
-
 		Records.Sort.By_Location(outFile, records, topLeft, bottomRight);
 
 		System.out.println("Sorted file at: " + outFile.getAbsolutePath());
@@ -154,7 +152,7 @@ public class CSV {
 	}
 	
 	public void writeToFile(File file) throws IOException {
-		System.out.println("Writing CSV to file: " + file.getAbsolutePath());
+		System.out.println("Writing CSVPckg to file: " + file.getAbsolutePath());
 		CSVWriter writer = new CSVWriter(new FileWriter(file));
 		headers.writeData(writer);
 		records.writeData(writer);
@@ -172,5 +170,86 @@ public class CSV {
 		writer.writeNext(this.headers.wigleHeader);
 		writer.writeNext(this.headers.fieldHeader);
 	}
-	
+
+	public void Matala0_Question2_Write(File fileToWriteTo) {
+
+	}
+
+	public ArrayList< ArrayList<Record> > Matala0_Question2_GetComboRecords() {
+		//SORT BY:
+		//TIME, ID, LAT, LON, ALT
+
+		//TIME is already sorted
+		//ID is the same for file
+		//LAT , LON should be same for next line. If not, then don't add.
+
+		ArrayList<Record> sameLineRecords = new ArrayList<>();
+		ArrayList<ArrayList<Record>> result = new ArrayList<>();
+
+		Record r1, r2;
+		for(int i = 0; i < records.size()-1; i++) {
+
+		    r1 = records.get(i);
+		    r2 = records.get(i+1);
+
+			sameLineRecords.add(r1);
+
+			while(isSameLine(r1,r2) == true) {
+				sameLineRecords.add(r2);
+				i++;
+				r2 = records.get(i+1);
+			}
+			result.add(sameLineRecords);
+			sameLineRecords = new ArrayList<>();
+		}
+
+		return result;
+	}
+
+
+	/**
+	 * @since Matala 0 Question 2
+	 * @param r1
+	 * @param r2
+	 * @return True if r2 and r1 should be in the same line as described
+	 * in Matala 0 Question 2 (Same TIME, ID, Lat, Lon, Alt)
+	 */
+	public static boolean isSameLine(Record r1, Record r2) {
+		//TIME is already sorted
+		//ID is the same for file
+		//LAT , LON should be same for next line. If not, then don't add.
+		//System.out.println("Comparing:");
+		//r1.print();
+		//r2.print();
+
+		if(Field.compareFields(r1, r2, Field.FirstSeen) != 0) {
+			//System.out.println("First seen incorrect.");
+			return false;
+		}
+		if(Field.compareFields(r1, r2, Field.Lat) != 0) {
+
+			//System.out.println("Lat incorrect.");
+			return false;
+		}
+		if(Field.compareFields(r1, r2, Field.Lon) != 0) {
+			//System.err.println("Lon incorrect.");
+			return false;
+		}
+		if(Field.compareFields(r1, r2, Field.Alt) != 0) {
+			//System.out.println("Alt incorrect.");
+			return false;
+		}
+        //System.out.println("SAME LINE");
+		return true;
+	}
+
+	@Override
+    public String toString() {
+	    return "[File, Lines] [" + csvFile.getName() + " , " + records.size() +"]";
+    }
+
+
+    public void printHeaders() {
+	    headers.print();
+    }
 }

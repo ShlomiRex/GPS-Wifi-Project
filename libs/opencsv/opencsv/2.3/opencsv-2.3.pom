@@ -6,7 +6,7 @@
 	<packaging>jar</packaging>
 	<version>2.3</version>
 	<name>opencsv</name>
-	<description>A simple library for reading and writing CSV in Java</description>
+	<description>A simple library for reading and writing CSVPckg in Java</description>
 	<url>http://opencsv.sf.net</url>
 	<parent>
     	<groupId>org.sonatype.oss</groupId>

@@ -2,26 +2,14 @@ package KML;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.LongToDoubleFunction;
 
-import CSV.CSV;
-import CSV.Record;
-import CSV.Record.Field;
-import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
-import de.micromata.opengis.kml.v_2_2_0.ColorMode;
+import CSVPckg.CSV;
+import CSVPckg.Record;
+import CSVPckg.Record.Field;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
-import de.micromata.opengis.kml.v_2_2_0.Icon;
 import de.micromata.opengis.kml.v_2_2_0.Kml;
-import de.micromata.opengis.kml.v_2_2_0.KmlFactory;
-import de.micromata.opengis.kml.v_2_2_0.ListItemType;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
-import de.micromata.opengis.kml.v_2_2_0.Style;
-import de.micromata.opengis.kml.v_2_2_0.StyleSelector;
 
 public class KML {
 	
@@ -34,7 +22,7 @@ public class KML {
 	public KML(CSV csv) {
 		this.csv = csv;
 		if(csv == null)
-			throw new NullPointerException("CSV is null.");
+			throw new NullPointerException("CSVPckg is null.");
 	}
 	
 	public void generateKML(File fileToGenerate) throws FileNotFoundException {

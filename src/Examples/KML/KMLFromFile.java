@@ -2,8 +2,8 @@ package Examples.KML;
 
 import java.io.File;
 
-import CSV.CSV;
-import CSV.CSVFactory;
+import CSVPckg.CSV;
+import CSVPckg.CSVFactory;
 import KML.KML;
 
 public class KMLFromFile {

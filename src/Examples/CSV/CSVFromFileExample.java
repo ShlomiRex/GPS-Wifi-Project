@@ -1,15 +1,11 @@
 package Examples.CSV;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 
-import CSV.CSV;
-import CSV.CSVFactory;
+import CSVPckg.CSV;
+import CSVPckg.CSVFactory;
 import Examples.IOUser;
 import Examples.Paths;
-
-import javax.swing.*;
 
 public class CSVFromFileExample {
 	public static void main(String[] args) throws Throwable {
@@ -17,7 +13,7 @@ public class CSVFromFileExample {
 		File fileToConvert = IOUser.getFileByUser();
 		CSV csv = CSVFactory.getCSVFromFile(fileToConvert);
 		File outFile = (new File(Paths.OUT+"/myCoolCSV.csv"));
-
+		csv.print();
 		csv.writeToFile(outFile);
 		IOUser.openFile(outFile);
 	}
