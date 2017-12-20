@@ -1,4 +1,4 @@
-package Examples.CSV;
+package CSVPckg;
 
 import CSVPckg.CSV;
 import CSVPckg.CSVHeaders;
@@ -8,6 +8,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class CSVCombo extends CSV {
 
@@ -49,7 +51,7 @@ public class CSVCombo extends CSV {
 
             sameLineRecords.add(r1);
 
-            while(isSameLine(r1,r2) == true) {
+            while(isSameLine(r1,r2) == true && i < iterations) {
                 sameLineRecords.add(r2);
                 i++;
                 r2 = records.get(i+1);
@@ -76,77 +78,173 @@ public class CSVCombo extends CSV {
         return result;
     }
 
-    public void writeCombo(File fileToWriteTo) throws Throwable {
+    public void writeCombo(File fileToWriteTo, boolean isStrongestTenRSSI) throws Throwable {
         System.out.println("Writing combo to: " + fileToWriteTo.getAbsolutePath());
         ArrayList<ArrayList<Record>> combos = getSubarraysComboRecords();
         if(combos.size() == 0 || combos.get(0).size() == 0)
             throw new Throwable("Size is 0!");
 
-
         CSVWriter writer = new CSVWriter(new FileWriter(fileToWriteTo));
-        ArrayList<String> lineToWrite = new ArrayList<>();
+        ArrayList<String> lineToWrite;
+
+        //Write fields line
+        writer.writeNext(getComboFields());
+
+        String[] temp; //junk
+
+        //For each 'Combo' array
+        for(ArrayList<Record> combo : combos) {
+            lineToWrite = new ArrayList<>();
+            if(combo.size() == 0)
+                break;
+
+            initComboLine(lineToWrite, combo);
+
+            if(isStrongestTenRSSI) {
+                combo = getComboByTenStrongestRSSI(combo);
+                System.out.println("New size: " + combo.size());
+            }
+
+            //Number of records in this combo
+            lineToWrite.add(""+combo.size());
+
+            //For each record in 'Combo' array
+            for (Record rec : combo) {
+                //Returns "MAC, SSID, CHANNEL, RSSI" for rec.
+                temp = getComboRecordDataByOrder(rec);
+
+                //Space
+                lineToWrite.add("");
+                for (int i = 0; i < temp.length; i++) {
+
+                    lineToWrite.add(temp[i]);
+                }
+            }
+            System.out.println();
+            writer.writeNext(getCSVStringFromArrayList(lineToWrite));
+            lineToWrite = new ArrayList<>();
+
+        }//For each 'Combo' array
+        writer.close();
+        System.out.println("Writing done. Combo is generated.");
+    }
+
+    private ArrayList<Record> getComboByTenStrongestRSSI(ArrayList<Record> combo) {
+        ArrayList<Record> newCombo = new ArrayList<>();
+
+        Comparator<? super Record> comp = new Comparator<Record>() {
+            @Override
+            public int compare(Record rec1, Record rec2) {
+
+                return Record.Field.compareFields(rec1, rec2, Record.Field.RSSI);
+            }
+        };
+        combo.sort(comp);
+
+        for(int i = 0; i < combo.size() && i < 10 ; i++) {
+            newCombo.add(combo.get(i));
+        }
+        return newCombo;
+    }
+
+    /**
+     * Adds to lineToWrite arguments which initializes the First Seen, Model, Device, Location, Alt, <b>WITHOUT NUMBER OF RECORDS !!!!</b>
+     * @param lineToWrite
+     * @param combo
+     */
+    private void initComboLine(ArrayList<String> lineToWrite, ArrayList<Record> combo) {
+        String lat, lon, alt, dateStamp;
+
+        //Timestamp
+        dateStamp = combo.get(0).get_Field(Record.Field.FirstSeen).toString();
+        lineToWrite.add(dateStamp);
 
         //ID
         String modelStamp = headers.wigle_getField(CSVHeaders.WigleField.model);
         String deviceStamp = headers.wigle_getField(CSVHeaders.WigleField.device);
 
-        //Time
-        String dateStamp;
+
+        //Model
+        lineToWrite.add(modelStamp);
+
+        //Device
+        lineToWrite.add(deviceStamp);
+
         //Location
-        String lat, lon;
-        String alt;
+        lat = combo.get(0).get_Field(Record.Field.Lat).toString();
+        lineToWrite.add(lat);
+        lon = combo.get(0).get_Field(Record.Field.Lon).toString();
+        lineToWrite.add(lon);
 
-        //For each element in combo
-        String ssid, mac, rssi, channel;
-        for(ArrayList<Record> combo : combos) {
-            for(Record rec : combo) {
-                //Timestamp
-                dateStamp = rec.get_Field(Record.Field.FirstSeen).toString();
-                lineToWrite.add(dateStamp);
-                //Model
-                lineToWrite.add(modelStamp);
-                //Device
-                lineToWrite.add(deviceStamp);
+        //Altitude
+        alt = combo.get(0).get_Field(Record.Field.Alt).toString();
+        lineToWrite.add(alt);
+    }
 
+    public String[] getComboFields() {
+        ArrayList<String> line = new ArrayList<>();
+        //WRITE FIELDS HEADER
+        line.add("First Seen");
+        line.add("Model");
+        line.add("Device");
+        line.add("Latitude");
+        line.add("Longtitude");
+        line.add("Altitude");
+        line.add("Num Of Records");
+        for(int i = 0; i < 10; i++) {
+            line.add("");
+            line.add("MAC");
+            line.add("SSID");
+            line.add("Channel");
+            line.add("RSSI");
 
-                //Location
-                lat = rec.get_Field(Record.Field.Lat).toString();
-                lineToWrite.add(lat);
-                lon = rec.get_Field(Record.Field.Lon).toString();
-                lineToWrite.add(lon);
-
-                //Altitude
-                alt = rec.get_Field(Record.Field.Alt).toString();
-
-                //Space
-                lineToWrite.add("");
-
-                //Time of combo
-                lineToWrite.add(""+combo.size());
-
-                //MAC
-                mac = rec.get_Field(Record.Field.MAC).toString();
-                lineToWrite.add(mac);
-
-                //SSID
-                ssid = rec.get_Field(Record.Field.SSID).toString();
-                lineToWrite.add(ssid);
-
-                //Channel (Frequency)
-                channel = rec.get_Field(Record.Field.Channel).toString();
-                lineToWrite.add(channel);
-
-                //RSSI
-                rssi = rec.get_Field(Record.Field.RSSI).toString();
-                lineToWrite.add(rssi);
-
-                //Space
-                lineToWrite.add("");
-            }
-            String[] arr = lineToWrite.toArray(new String[lineToWrite.size()]);
-            writer.writeNext(arr);
         }
-        System.out.println("Writing done. Combo is generated.");
+
+        String[] finalResult = new String[line.size()];
+        finalResult = line.toArray(finalResult);
+
+        return finalResult;
+    }
+
+    /**
+     *
+     * @param record
+     * @return MAC, SSID, CHANNEL, RSSI by this order
+     */
+    private String[] getComboRecordDataByOrder(Record record) {
+        ArrayList<String> comboLine = new ArrayList<>();
+        String ssid, mac, rssi, channel;
+
+        mac = record.get_Field(Record.Field.MAC).toString();
+        ssid = record.get_Field(Record.Field.SSID).toString();
+        channel = record.get_Field(Record.Field.Channel).toString();
+        rssi = record.get_Field(Record.Field.RSSI).toString();
+
+        comboLine.add(mac);
+        comboLine.add(ssid);
+        comboLine.add(channel);
+        comboLine.add(rssi);
+
+        String[] finalResult = new String[comboLine.size()];
+        finalResult = comboLine.toArray(finalResult);
+
+        return finalResult;
+    }
+
+    /**
+     *
+     * @param arr Array of data (MAC, SSID...) Anythinf with 'commas'.
+     * @return Array, each element is 'comma' seperated.
+     */
+    public String[] getCSVStringFromArrayList(ArrayList<String> arr) {
+        String[] result = new String[arr.size()];
+        for(int i = 0; i < arr.size()-1; i++) {
+            result[i] = arr.get(i);
+        }
+        //add last element
+        String last = arr.get(arr.size()-1);
+        result[arr.size()-1] = last;
+        return result;
     }
 
 

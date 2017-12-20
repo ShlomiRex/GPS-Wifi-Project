@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 import CSVPckg.Record.Field;
 import CSVPckg.Record.GeoPoint;
@@ -40,6 +42,12 @@ public class CSV {
 		setup(lines);
 
 		System.out.println("Reading done. CSV created.");
+	}
+
+	public CSV(CSV csv) {
+		this.records = csv.records;
+		this.csvFile = csv.csvFile;
+		this.headers = csv.headers;
 	}
 
 	/**
@@ -169,78 +177,6 @@ public class CSV {
 	public void writeWigleAndHeader(CSVWriter writer, Records recordsToReadFrom) {
 		writer.writeNext(this.headers.wigleHeader);
 		writer.writeNext(this.headers.fieldHeader);
-	}
-
-	public void Matala0_Question2_Write(File fileToWriteTo) {
-
-	}
-
-	public ArrayList< ArrayList<Record> > Matala0_Question2_GetComboRecords() {
-		//SORT BY:
-		//TIME, ID, LAT, LON, ALT
-
-		//TIME is already sorted
-		//ID is the same for file
-		//LAT , LON should be same for next line. If not, then don't add.
-
-		ArrayList<Record> sameLineRecords = new ArrayList<>();
-		ArrayList<ArrayList<Record>> result = new ArrayList<>();
-
-		Record r1, r2;
-		for(int i = 0; i < records.size()-1; i++) {
-
-		    r1 = records.get(i);
-		    r2 = records.get(i+1);
-
-			sameLineRecords.add(r1);
-
-			while(isSameLine(r1,r2) == true) {
-				sameLineRecords.add(r2);
-				i++;
-				r2 = records.get(i+1);
-			}
-			result.add(sameLineRecords);
-			sameLineRecords = new ArrayList<>();
-		}
-
-		return result;
-	}
-
-
-	/**
-	 * @since Matala 0 Question 2
-	 * @param r1
-	 * @param r2
-	 * @return True if r2 and r1 should be in the same line as described
-	 * in Matala 0 Question 2 (Same TIME, ID, Lat, Lon, Alt)
-	 */
-	public static boolean isSameLine(Record r1, Record r2) {
-		//TIME is already sorted
-		//ID is the same for file
-		//LAT , LON should be same for next line. If not, then don't add.
-		//System.out.println("Comparing:");
-		//r1.print();
-		//r2.print();
-
-		if(Field.compareFields(r1, r2, Field.FirstSeen) != 0) {
-			//System.out.println("First seen incorrect.");
-			return false;
-		}
-		if(Field.compareFields(r1, r2, Field.Lat) != 0) {
-
-			//System.out.println("Lat incorrect.");
-			return false;
-		}
-		if(Field.compareFields(r1, r2, Field.Lon) != 0) {
-			//System.err.println("Lon incorrect.");
-			return false;
-		}
-		if(Field.compareFields(r1, r2, Field.Alt) != 0) {
-			//System.out.println("Alt incorrect.");
-			return false;
-		}
-        //System.out.println("SAME LINE");
-		return true;
 	}
 
 	@Override
