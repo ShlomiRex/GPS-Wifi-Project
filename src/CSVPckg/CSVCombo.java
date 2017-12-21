@@ -8,9 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 /**
  * @since MATALA 0 QUESTION 2, MATALA 2
@@ -55,7 +53,7 @@ public class CSVCombo extends CSV {
 
             sameLineRecords.add(r1);
 
-            while(isSameLine(r1,r2) == true && i < iterations) {
+            while(i < iterations-1 && isSameLine(r1,r2) == true) {
                 sameLineRecords.add(r2);
                 i++;
                 r2 = records.get(i+1);
@@ -116,7 +114,7 @@ public class CSVCombo extends CSV {
 
             if(isStrongestTenRSSI) {
                 combo = getComboByTenStrongestRSSI(combo);
-                System.out.println("New size: " + combo.size());
+                //System.out.println("New size: " + combo.size());
             }
 
             //Number of records in this combo
@@ -206,7 +204,7 @@ public class CSVCombo extends CSV {
         return result;
     }
 
-    public ArrayList<Record> getStrongestRecordsByMac(String searchMac, int k) throws IOException {
+    public ArrayList<Record> getStrongestKRecordsByMac(String searchMac, int k) {
         ArrayList<Record> recordsWithSameMac = getAllRecordsBySameMac(searchMac);
         recordsWithSameMac.sort(new Comparator<Record>() {
             @Override
@@ -222,8 +220,77 @@ public class CSVCombo extends CSV {
         return result;
     }
 
-    public void algo1(String mac) {
+    public float[] algo1(String mac) {
+        int k = 3;
 
+        ArrayList<Record> greatWifi = getStrongestKRecordsByMac(mac, k);
+
+        for(Record r : greatWifi) {
+            r.print();
+            System.out.println("Alt:" + r.get_Field(Record.Field.Alt));
+        }
+
+        ArrayList<Float> signal_weight = new ArrayList<>();
+        initSignalWeight:
+        {
+            for (Record r : greatWifi) {
+                Float rssi = (Float) r.get_Field(Record.Field.RSSI);
+                signal_weight.add(1 / (rssi.floatValue() * rssi.floatValue()));
+            }
+        }
+
+
+        ArrayList<Float> latitudes = new ArrayList<>();
+        initLatWeight: {
+            for(Record r : greatWifi) {
+                Float lat = (Float) r.get_Field(Record.Field.Lat);
+                latitudes.add(lat);
+            }
+        }
+
+
+        ArrayList<Float> longtitudes = new ArrayList<>();
+        initLonWeight: {
+            for(Record r : greatWifi) {
+                Float lat = (Float) r.get_Field(Record.Field.Lon);
+                longtitudes.add(lat);
+            }
+        }
+
+
+        ArrayList<Float> alttitudes = new ArrayList<>();
+        initAltWeight: {
+            for(Record r : greatWifi) {
+                Float lat = (Float) r.get_Field(Record.Field.Alt);
+                alttitudes.add(lat);
+            }
+        }
+
+
+        float sumWLat = 0, sumWLon = 0, sumWAlt = 0, sumWSignal = 0;
+
+        for(int i = 0; i < greatWifi.size(); i++) {
+            float weight = ((Float)signal_weight.get(i)).floatValue();
+            float lat = ((Float)latitudes.get(i)).floatValue();
+            float lon = ((Float)longtitudes.get(i)).floatValue();
+            float alt = ((Float)alttitudes.get(i)).floatValue();
+
+            float wLat = weight * lat;
+            float wLon = weight * lon;
+            float wAlt = weight * alt;
+
+            sumWLat += wLat;
+            sumWLon += wLon;
+            sumWAlt += wAlt;
+            sumWSignal += weight;
+        }
+
+        float wSum_Of_wLat = sumWLat / sumWSignal;
+        float wSum_Of_wLon = sumWLon / sumWSignal;
+        float wSum_Of_wAlt = sumWAlt / sumWSignal;
+
+        float[] result = {wSum_Of_wLat, wSum_Of_wLon, wSum_Of_wAlt};
+        return result;
     }
 
     private static ArrayList<Record> getComboByTenStrongestRSSI(ArrayList<Record> combo) {

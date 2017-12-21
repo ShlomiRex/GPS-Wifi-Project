@@ -1,9 +1,6 @@
 package Examples.CSV;
 
-import CSVPckg.CSV;
-import CSVPckg.CSVCombo;
-import CSVPckg.CSVHeaders;
-import CSVPckg.Record;
+import CSVPckg.*;
 import Examples.IOUser;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +56,7 @@ public class TestCombo {
         }
 
         System.out.println("\n\nBest " + k + " records by rssi:");
-        ArrayList<Record> result = combo.getStrongestRecordsByMac(mac2, k);
+        ArrayList<Record> result = combo.getStrongestKRecordsByMac(mac2, k);
         for(Record r : result) {
             r.print();
         }
@@ -127,4 +124,46 @@ public class TestCombo {
         }
         System.out.println("\nFields: " + result.length);
     }
+
+    @Test
+    public void testAlgo1() throws Throwable {
+        String path = "src/Data/27.10/Lenovo/WigleWifi_20171027162929.csv";
+        File wigleCSVFile = new File(path);
+        CSVCombo csvCombo = new CSVCombo(wigleCSVFile);
+        String mac = "02:8d:db:6e:71:6d";
+        float[] result = csvCombo.algo1(mac);
+
+        float r1 = result[0];
+        float r2 = result[1];
+        float r3 = result[2];
+        System.out.println(r1+" , "+r2+" , "+r3);
+    }
+
+
+    public static void main(String[] args) throws Throwable {
+        String path = "src/Data/27.10/Lenovo/";
+        File folder = new File(path);
+        CSVFactory factory = new CSVFactory(folder);
+
+        CSVCombo csvCombo = new CSVCombo(factory.csvList.get(0).csvFile);
+
+        String pathOut = "src/Out/test.csv";
+        File outFile = new File(pathOut);
+        csvCombo.writeCombo(outFile, true);
+        IOUser.openFile(outFile);
+
+
+        String mac = "02:8d:db:6e:71:6d";
+        float[] result = csvCombo.algo1(mac);
+
+        float r1 = result[0];
+        float r2 = result[1];
+        float r3 = result[2];
+        System.out.println(r1+" , "+r2+" , "+r3);
+    }
+
+
+
+
+
 }

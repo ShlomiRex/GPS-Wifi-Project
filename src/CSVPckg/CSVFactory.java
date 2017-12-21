@@ -27,7 +27,7 @@ public class CSVFactory {
 		System.out.println("Total files in folder: " + allFilesInFolder.size());
 		System.out.println("Total valid csv files: " + csvList.size());
 	}
-	
+
 	public CSVFactory(File folder) throws Throwable {
 		this(folder.getAbsolutePath());
 	}
