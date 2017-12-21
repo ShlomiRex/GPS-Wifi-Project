@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +21,11 @@ public class TestCombo {
 
 
 
-    @Test
+    @Test/*
+    public String[] convertComboLineToCSVLine(ArrayList<String> arr) {
+        convertComboLineToCSVLine(this, arr);
+    }*/
+
     public void test_CSVIsComboFunction() throws Throwable {
         CSVCombo csvCombo = new CSVCombo(file);
 
@@ -39,6 +42,27 @@ public class TestCombo {
         assertTrue(csvCombo.isSameLine(r4, r5));
         assertTrue(! csvCombo.isSameLine(r5, r6));
 
+    }
+
+    @Test
+    public void test_GetStrongest4Wifi() throws Throwable {
+        File wigle = IOUser.getFileByUser();
+        CSVCombo combo = new CSVCombo(wigle);
+        int k = 4;
+        String mac = "98:e7:f4:c6:4b:37";
+        String mac2 = "02:8d:db:6e:71:6d";
+
+        System.out.println("All records with same mac:");
+        ArrayList<Record> notSorted = combo.getAllRecordsBySameMac(mac2);
+        for(Record r : notSorted) {
+            r.print();
+        }
+
+        System.out.println("\n\nBest " + k + " records by rssi:");
+        ArrayList<Record> result = combo.getStrongestRecordsByMac(mac2, k);
+        for(Record r : result) {
+            r.print();
+        }
     }
 
     @Test
@@ -64,8 +88,8 @@ public class TestCombo {
     public void test_ComboWriting() throws Throwable {
         //CSVCombo csvCombo = new CSVCombo(file);
         CSVCombo csvCombo = new CSVCombo(IOUser.getFileByUser());
-        File fileOut = new File("src/Data/testComboWriting2.csv");
-        csvCombo.writeCombo(fileOut, false);
+        File fileOut = new File("src/Out/testComboWriting2.csv");
+        csvCombo.writeCombo(fileOut, true);
         IOUser.openFile(fileOut);
     }
 
@@ -78,7 +102,8 @@ public class TestCombo {
         testArr.add("C");
         testArr.add("D");
         testArr.add("E");
-        String[] res = csvCombo.getCSVStringFromArrayList(testArr);
+
+        String[] res = CSVCombo.convertComboLineToCSVLine(testArr);
         String actual;
         String expected = "A,B,C,D,E";
 
@@ -96,7 +121,7 @@ public class TestCombo {
     @Test
     public void test_getComboFields() throws Throwable {
         CSVCombo csvCombo = new CSVCombo(file);
-        String[] result = csvCombo.getComboFields();
+        String[] result = csvCombo.getCSVComboHeaders_Fields();
         for(int i = 0; i < result.length; i++) {
             System.out.print(result[i] + " ");
         }

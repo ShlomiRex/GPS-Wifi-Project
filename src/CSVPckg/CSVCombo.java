@@ -1,27 +1,29 @@
 package CSVPckg;
 
-import CSVPckg.CSV;
-import CSVPckg.CSVHeaders;
-import CSVPckg.Record;
+import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
+/**
+ * @since MATALA 0 QUESTION 2, MATALA 2
+ */
 public class CSVCombo extends CSV {
 
 
-    public CSVCombo(File fileToConvert) throws Throwable {
-        super(fileToConvert);
-    }
+    public ArrayList<ArrayList<Record>> combos;
 
-    public CSVCombo(CSV csv) {
-        super(csv);
+    public CSVCombo(File wigleCSVFile) throws Throwable {
+        super(wigleCSVFile);
+        combos = getSubarraysComboRecords(this);
     }
-
 
     /**
      * @since MATALA 0 QUESTION 2
@@ -31,13 +33,15 @@ public class CSVCombo extends CSV {
      * 			EACH COMBO: TIME, ID, LAT, LON, ALT<br>
      *
      */
-    public ArrayList<ArrayList<Record>> getSubarraysComboRecords() {
+    private static ArrayList<ArrayList<Record>> getSubarraysComboRecords(CSV wigleCSV) {
         //SORT BY:
         //TIME, ID, LAT, LON, ALT
 
         //TIME is already sorted
         //ID is the same for file
         //LAT , LON should be same for next line. If not, then don't add.
+
+        Records records = wigleCSV.records;
 
         ArrayList<Record> sameLineRecords = new ArrayList<>();
         ArrayList<ArrayList<Record>> result = new ArrayList<>();
@@ -78,9 +82,18 @@ public class CSVCombo extends CSV {
         return result;
     }
 
+    public ArrayList<ArrayList<Record>> getSubarraysComboRecords() {
+        return  getSubarraysComboRecords(this);
+    }
+
     public void writeCombo(File fileToWriteTo, boolean isStrongestTenRSSI) throws Throwable {
+        writeCombo(this, fileToWriteTo, headers, isStrongestTenRSSI);
+    }
+
+
+    public static void writeCombo(CSVCombo csvCombo, File fileToWriteTo, CSVHeaders headers ,boolean isStrongestTenRSSI) throws Throwable {
         System.out.println("Writing combo to: " + fileToWriteTo.getAbsolutePath());
-        ArrayList<ArrayList<Record>> combos = getSubarraysComboRecords();
+        ArrayList<ArrayList<Record>> combos = csvCombo.combos;
         if(combos.size() == 0 || combos.get(0).size() == 0)
             throw new Throwable("Size is 0!");
 
@@ -88,17 +101,18 @@ public class CSVCombo extends CSV {
         ArrayList<String> lineToWrite;
 
         //Write fields line
-        writer.writeNext(getComboFields());
+        writer.writeNext(getCSVComboHeaders_Fields());
 
         String[] temp; //junk
 
-        //For each 'Combo' array
+        //For each 'Combo'
         for(ArrayList<Record> combo : combos) {
             lineToWrite = new ArrayList<>();
             if(combo.size() == 0)
                 break;
 
-            initComboLine(lineToWrite, combo);
+            //inti the line so to: First Seen, Model, Device, Location, Alt, WITHOUT NUMBER OF RECORDS !!!!
+            initComboLine(csvCombo, lineToWrite, combo);
 
             if(isStrongestTenRSSI) {
                 combo = getComboByTenStrongestRSSI(combo);
@@ -121,22 +135,105 @@ public class CSVCombo extends CSV {
                 }
             }
             System.out.println();
-            writer.writeNext(getCSVStringFromArrayList(lineToWrite));
-            lineToWrite = new ArrayList<>();
+            String[] r = convertComboLineToCSVLine(lineToWrite);
+            writer.writeNext(r);
 
         }//For each 'Combo' array
         writer.close();
         System.out.println("Writing done. Combo is generated.");
     }
 
-    private ArrayList<Record> getComboByTenStrongestRSSI(ArrayList<Record> combo) {
+    /**
+     * Searches in CSV file, if find record by same MAC return its line and number of this record in the line.
+     * EXAMPLE: <br>
+     * [1] MAC1 .. RSSI1 , MAC2.. RSSI2 , MAC3 .. RSSI3
+     * [2] MAC1 .. RSSI1 , MAC2.. RSSI2 , MAC3 .. RSSI3
+     * [3] MAC1 .. RSSI1 , MAC2.. RSSI2 , MAC3 .. RSSI3
+     * <br>Mac1 in line 1 and Mac3 in line 2 are the ones we searching for.
+     * <br>So return:<br>
+     * { {1,3},{2, 3} }
+     * @param comboCSVFile
+     * @param searchMac
+     * @param k
+     * @return
+     * @throws IOException
+     */
+    public static ArrayList<int[]> getAllLinesWithSameMac(File comboCSVFile, String searchMac, int k) throws IOException {
+        FileReader fr = new FileReader(comboCSVFile);
+        CSVReader reader = new CSVReader(fr);
+
+        ArrayList<String[]> allLines = (ArrayList<String[]>) reader.readAll();
+        String[] line;
+        //First colum at which first mac is there
+        int firstMacColumn = 8;
+        int currentColumn = firstMacColumn;
+        String rssi, mac;
+
+        ArrayList<int[]> result = new ArrayList<>();
+
+        for(int i = 1; i < allLines.size() && k != 0; i++) {
+            line = allLines.get(i);
+            for(int column = firstMacColumn; column < line.length; column += 5) {
+                rssi = line[column + 3];
+                mac = line[column];
+                if(mac.equals(searchMac)) {
+                    System.out.println("["+i+1+"]   " + mac +"    RSSI: " + rssi);
+                    k--;
+                    addToResult:
+                    {
+                        int[] temp = {i+1, column+1};
+                        result.add(temp);
+                    }
+                }
+            }
+
+        }
+
+        reader.close();
+
+        return result;
+    }
+
+    public ArrayList<Record> getAllRecordsBySameMac(String mac) {
+        ArrayList<Record> result = new ArrayList<>();
+        for(ArrayList<Record> combo : combos) {
+            for(Record record : combo) {
+                if(((String)record.get_Field(Record.Field.MAC)).equals(mac)) {
+                    result.add(record);
+                }
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Record> getStrongestRecordsByMac(String searchMac, int k) throws IOException {
+        ArrayList<Record> recordsWithSameMac = getAllRecordsBySameMac(searchMac);
+        recordsWithSameMac.sort(new Comparator<Record>() {
+            @Override
+            public int compare(Record o1, Record o2) {
+                return Record.Field.compareFields(o2, o1, Record.Field.RSSI);
+            }
+        });
+        ArrayList<Record> result = new ArrayList<>();
+
+        for(int i = 0; i < recordsWithSameMac.size() && i < k; i++)
+            result.add(recordsWithSameMac.get(i));
+
+        return result;
+    }
+
+    public void algo1(String mac) {
+
+    }
+
+    private static ArrayList<Record> getComboByTenStrongestRSSI(ArrayList<Record> combo) {
         ArrayList<Record> newCombo = new ArrayList<>();
 
         Comparator<? super Record> comp = new Comparator<Record>() {
             @Override
             public int compare(Record rec1, Record rec2) {
 
-                return Record.Field.compareFields(rec1, rec2, Record.Field.RSSI);
+                return Record.Field.compareFields(rec2, rec1, Record.Field.RSSI);
             }
         };
         combo.sort(comp);
@@ -153,6 +250,11 @@ public class CSVCombo extends CSV {
      * @param combo
      */
     private void initComboLine(ArrayList<String> lineToWrite, ArrayList<Record> combo) {
+        initComboLine(this, lineToWrite, combo);
+    }
+
+    private static void initComboLine(CSVCombo csvCombo, ArrayList<String> lineToWrite, ArrayList<Record> combo) {
+
         String lat, lon, alt, dateStamp;
 
         //Timestamp
@@ -160,8 +262,8 @@ public class CSVCombo extends CSV {
         lineToWrite.add(dateStamp);
 
         //ID
-        String modelStamp = headers.wigle_getField(CSVHeaders.WigleField.model);
-        String deviceStamp = headers.wigle_getField(CSVHeaders.WigleField.device);
+        String modelStamp = csvCombo.headers.wigle_getField(CSVHeaders.WigleField.model);
+        String deviceStamp = csvCombo.headers.wigle_getField(CSVHeaders.WigleField.device);
 
 
         //Model
@@ -181,7 +283,7 @@ public class CSVCombo extends CSV {
         lineToWrite.add(alt);
     }
 
-    public String[] getComboFields() {
+    public static String[] getCSVComboHeaders_Fields() {
         ArrayList<String> line = new ArrayList<>();
         //WRITE FIELDS HEADER
         line.add("First Seen");
@@ -211,7 +313,7 @@ public class CSVCombo extends CSV {
      * @param record
      * @return MAC, SSID, CHANNEL, RSSI by this order
      */
-    private String[] getComboRecordDataByOrder(Record record) {
+    private static String[] getComboRecordDataByOrder(Record record) {
         ArrayList<String> comboLine = new ArrayList<>();
         String ssid, mac, rssi, channel;
 
@@ -236,7 +338,7 @@ public class CSVCombo extends CSV {
      * @param arr Array of data (MAC, SSID...) Anythinf with 'commas'.
      * @return Array, each element is 'comma' seperated.
      */
-    public String[] getCSVStringFromArrayList(ArrayList<String> arr) {
+    public static String[] convertComboLineToCSVLine(ArrayList<String> arr) {
         String[] result = new String[arr.size()];
         for(int i = 0; i < arr.size()-1; i++) {
             result[i] = arr.get(i);
@@ -246,7 +348,6 @@ public class CSVCombo extends CSV {
         result[arr.size()-1] = last;
         return result;
     }
-
 
     /**
      * @since Matala 0 Question 2
