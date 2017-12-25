@@ -143,9 +143,8 @@ public class TestCombo {
     public static void main(String[] args) throws Throwable {
         String path = "src/Data/27.10/Lenovo/";
         File folder = new File(path);
-        CSVFactory factory = new CSVFactory(folder);
 
-        CSVCombo csvCombo = new CSVCombo(factory.csvList.get(0).csvFile);
+        CSVCombo csvCombo = new CSVCombo(CSVFactory.getCSVsFromFolder(folder).get(0).csvFile);
 
         String pathOut = "src/Out/test.csv";
         File outFile = new File(pathOut);

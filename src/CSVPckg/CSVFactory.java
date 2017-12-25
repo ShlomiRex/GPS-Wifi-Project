@@ -4,40 +4,33 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVFactory {
+public abstract class CSVFactory {
 	
 	public File folder;
-	public ArrayList<File> allFilesInFolder;
-	public List<CSV> csvList;
-	
+
 	/**
 	 * Read all files in folder and subfolders, and put them in csvList.
 	 * @param folder Read from this folder and all subfolders - all files.
 	 * @throws Throwable
 	 */
-	public CSVFactory(String folder) throws Throwable {
-		this.folder = new File(folder);
-		System.out.println("Reading from folder: " + this.folder.getAbsolutePath());
-		if(this.folder == null || this.folder.exists() == false)
-			throw new Throwable("Folder is not valid! : " + this.folder.getAbsolutePath() );
-		allFilesInFolder = new ArrayList<>();
+	public static List<CSV> getCSVsFromFolder(File folder) throws Throwable {
+		System.out.println("Reading from folder: " + folder.getAbsolutePath());
+		if(folder == null || folder.exists() == false)
+			throw new Throwable("Folder is not valid! : " + folder.getAbsolutePath() );
+		ArrayList<File> allFilesInFolder = new ArrayList<>();
 		listf(folder, allFilesInFolder);
-		csvList = getCSVFiles(allFilesInFolder);
+		List<CSV> csvList = getCSVFiles(allFilesInFolder);
 		System.out.println("Done reading.");
 		System.out.println("Total files in folder: " + allFilesInFolder.size());
 		System.out.println("Total valid csv files: " + csvList.size());
+		return csvList;
 	}
-
-	public CSVFactory(File folder) throws Throwable {
-		this(folder.getAbsolutePath());
-	}
-
 	/**
 	 *
 	 * @param file
 	 * @return csv object by given file. Returns null if file is not valid wigle csv.
 	 */
-	public static CSV getCSVFromFile(File file) {
+	public static CSV getWigleCSVFromFile(File file) {
 		List<File> lst = new ArrayList<>();
 		lst.add(file);
 		List<CSV> lstNew = getCSVFiles(lst);
@@ -48,19 +41,16 @@ public class CSVFactory {
 	
 	/**
 	 * List all files and put them in files argument.
-	 * @param directoryName
 	 * @param files
 	 */
-	public void listf(String directoryName, ArrayList<File> files) {
-	    File directory = new File(directoryName);
-
+	public static void listf(File folder, ArrayList<File> files) {
 	    // get all the files from a directory
-	    File[] fList = directory.listFiles();
+	    File[] fList = folder.listFiles();
 	    for (File file : fList) {
 	        if (file.isFile()) {
 	            files.add(file);
 	        } else if (file.isDirectory()) {
-	            listf(file.getAbsolutePath(), files);
+	            listf(file, files);
 	        }
 	    }
 	}

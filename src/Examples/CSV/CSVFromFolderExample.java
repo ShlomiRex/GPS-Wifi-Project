@@ -11,10 +11,8 @@ import Examples.Paths;
 public class CSVFromFolderExample {
 	public static void main(String[] args) throws Throwable {
 		File folder = IOUser.getFolderByUser();
-		CSVFactory factory = new CSVFactory(folder);
-		List<CSV> csvList = factory.csvList; //get the csv list.
-		
-		
+		List<CSV> csvList = CSVFactory.getCSVsFromFolder(folder);
+
 		File outputFolder = new File(Paths.OUT+"/");
 		File outFile;
 		//write each file in folder to spesific place with names.
