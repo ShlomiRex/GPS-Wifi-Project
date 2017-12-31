@@ -73,6 +73,13 @@ public class ComboCSV extends AbstractCSV{
         return true;
     }
 
-
+    /**
+     * Filters all combo lines whos size is above 10 and set line max combo data to 10 and takes only strongest RSSI.<br>
+     *     Also writes changes to file.
+     */
+    public void filterStrongestRSSI() throws IOException {
+        comboLines.filterStrongestRSSI();
+        comboLines.write(this);
+    }
 
 }

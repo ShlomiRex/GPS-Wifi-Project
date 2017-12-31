@@ -18,5 +18,6 @@ public class ComboCSVTest {
         WigleCSV wigleCSV = new WigleCSV(wigle.getAbsolutePath());
         File fileOut = new File(Paths.OUT_TESTS+"/ComboTest.csv");
         ComboCSV comboCSV = new ComboCSV(fileOut, wigleCSV);
+        comboCSV.filterStrongestRSSI();
     }
 }

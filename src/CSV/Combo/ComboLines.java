@@ -1,5 +1,6 @@
 package CSV.Combo;
 
+import CSV.Data.AP_WifiData;
 import CSV.Wigle.Data.WigleCSVData;
 import CSV.Wigle.Data.WigleWifiData;
 import CSV.Wigle.WigleCSV;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ComboLines extends ArrayList<ComboLine> {
@@ -128,5 +130,25 @@ public class ComboLines extends ArrayList<ComboLine> {
             line.appendToWriter(writer);
         }
         writer.close();
+    }
+
+    /**
+     * Takes all combos with size exceeds 10 and filters all of the combo datas by RSSI.
+     */
+    public void filterStrongestRSSI() {
+        for(ComboLine l : this) {
+            if(l.size() > 10) {
+                l.sort(new Comparator<AP_WifiData>() {
+                    @Override
+                    public int compare(AP_WifiData ap_wifiData1, AP_WifiData ap_wifiData2) {
+                        return Double.compare(ap_wifiData1.wifiSpectrum.rssi, ap_wifiData2.wifiSpectrum.rssi);
+                    }
+                });
+                int size = l.size();
+                for(int i = size-1; i >= 10; i--) {
+                    l.remove(i);
+                }
+            }
+        }
     }
 }
