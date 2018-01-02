@@ -16,6 +16,10 @@ public class WigleCSV extends AbstractCSV {
 
     public WigleCSV(String filePath) throws IOException {
         super(filePath);
+        if(this.exists() == false) {
+            System.out.println("File " + getAbsolutePath() + " doesn't exists. \n Creating file...");
+            this.createNewFile();
+        }
         System.out.println("Initializing wigle CSV... ");
         headers = getHeaders();
 
@@ -38,7 +42,8 @@ public class WigleCSV extends AbstractCSV {
      * @throws IOException
      */
     private WigleHeaders getHeaders() throws IOException {
-        CSVReader reader = new CSVReader(new FileReader(this));
+        FileReader fr = new FileReader(this);
+        CSVReader reader = new CSVReader(fr);
 
         String[] line1 = reader.readNext();
         String[] line2 = reader.readNext();

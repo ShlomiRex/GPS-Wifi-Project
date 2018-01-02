@@ -71,8 +71,8 @@ public class ComboLines extends ArrayList<ComboLine> {
             //temp combo first wifi data
             temp = new ArrayList<>();
             temp.add(data1);
-            //add to first combo data untill not same line.
-            while (i < csvData.size() - 1 && isSameLine(data1, data2)) {
+            //add to first combo data untill not same line. (or untill reached end.
+            while (i < csvData.size() - 2 && isSameLine(data1, data2)) {
                 temp.add(data2);
                 i++;
                 data2 = csvData.get(i + 1);

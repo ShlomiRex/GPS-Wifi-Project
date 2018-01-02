@@ -82,15 +82,20 @@ public class WigleCSVData extends ArrayList<WigleWifiData> {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat format2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        SimpleDateFormat format3 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         Date date = null;
         try {
             date = format2.parse(str);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             try {
                 date = format1.parse(str);
-            } catch (ParseException e1) {
-                e1.printStackTrace();
-                System.err.println("Error parsing: " + str);
+            } catch (Exception e1) {
+                try {
+                    date = format3.parse(str);
+                } catch (Exception e2) {
+                    e1.printStackTrace();
+                    System.err.println("Error parsing: " + str);
+                }
             }
         }
         return date;
@@ -105,5 +110,4 @@ public class WigleCSVData extends ArrayList<WigleWifiData> {
         });
 
     }
-
 }

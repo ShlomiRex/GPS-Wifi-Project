@@ -1,32 +1,20 @@
 
-import au.com.bytecode.opencsv.CSVReader;
+import CSV.Combo.ComboCSV;
+import CSV.Wigle.WigleCSV;
+import Utils.Paths;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 public abstract class Algo1 {
 
-
-//    public static CSVCombo CombineWiglesToCombo(File wigleCSVFolder) {
-//
-//    }
-//
-//    public static void TestAlgo1(File wigleCSVFolder , File algo1_BM2_4) throws IOException {
-//        CSVCombo csvCombo = CombineWiglesToCombo(wigleCSVFolder);
-//
-//        CSVReader csvReader = new CSVReader(new FileReader(algo1_BM2_4));
-//
-//        String[] line;
-//        double lat, lon, alt;
-//        String mac;
-//        while( (line = csvReader.readNext()) != null) {
-//            mac = line[1];
-//            lat = Double.parseDouble(line[5]);
-//            lon = Double.parseDouble(line[6]);
-//            alt = Double.parseDouble(line[7]);
-//
-//            csvCombo.algo1(mac);
-//        }
-//    }
+    public static void main(String[] args) throws IOException {
+        String csvPath = Paths.WIGLE_DATA + "/1_algo1.csv";
+        WigleCSV wigleCSV = new WigleCSV(csvPath);
+        ComboCSV comboCSV = new ComboCSV(new File(Paths.OUT_TESTS + "/algo1test.csv"), wigleCSV, true);
+        String mac = "b4:ee:b4:36:d2:b0";
+        int k = 3;
+        double[] sumWTotal = comboCSV.calculateAPLocation(mac, k);
+        System.out.printf("SUM TOTAL: FINAL RESULT: %f %f %f" ,sumWTotal[0], sumWTotal[1], sumWTotal[2]);
+    }
 }

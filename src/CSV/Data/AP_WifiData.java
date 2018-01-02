@@ -20,5 +20,10 @@ public class AP_WifiData {
         this.mac = mac;
     }
 
+    @Override
+    public String toString() {
+        return mac + ", " + ssid + ", LOC: [" + location.toString() + "] , WIFI: [" + wifiSpectrum.toString()+"]";
+    }
+
 
 }

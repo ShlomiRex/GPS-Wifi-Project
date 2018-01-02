@@ -23,6 +23,9 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
      */
     public AbstractCSV(String filePath) throws IOException {
         super(filePath);
+        File f = new File(filePath);
+        if(f.exists() == false)
+            f.createNewFile();
         lines = read(this);
     }
 
