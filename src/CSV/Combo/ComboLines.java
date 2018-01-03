@@ -4,19 +4,14 @@ import CSV.Data.AP_WifiData;
 import CSV.Wigle.Data.WigleCSVData;
 import CSV.Wigle.Data.WigleWifiData;
 import CSV.Wigle.WigleCSV;
+import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class ComboLines extends ArrayList<ComboLine> {
-
-    private ArrayList<WigleCSV> wigleCSVArrayList;
 
     /**
      * Init empty array list.
@@ -25,15 +20,49 @@ public class ComboLines extends ArrayList<ComboLine> {
         super();
     }
 
-//    public ComboLines(List<WigleCSV> wigleCSVList) {
-//        wigleCSVArrayList = (ArrayList<WigleCSV>) wigleCSVList;
-//
-//    }
-
     public ComboLines(WigleCSV wigleCSV) {
-        wigleCSVArrayList = new ArrayList<>();
-        wigleCSVArrayList.add(wigleCSV);
         addAll(getComboLines(wigleCSV));
+    }
+
+    /**
+     * Takes combo file and converts it's lines to objects.
+     * @param lines
+     */
+    public ComboLines(List<String[]> lines) throws IOException {
+        //wigleCSVArrayList = new ArrayList<>();
+        super();
+        addAll(getComboLines(lines));
+    }
+
+    /**
+     * Filters all lines and takes only valid combo lines.
+     * @since MATALA 0 QUESTION 2
+     * @return Subarrays of same combo lines (same Time, ID, ect...)
+     * 			Each subarray contains elements of Record which are in the CSV file.<br>
+     * 			EACH CSV: MODEL, DEVICE<br>
+     * 			EACH COMBO: TIME, ID, LAT, LON, ALT<br>
+     *
+     */
+    private ComboLines getComboLines(List<String[]> lines) throws IOException {
+        ComboLines comboLines = new ComboLines();
+        ComboLine tmpLine;
+        int lineNumber = 1;
+        int numOfErrors = 0;
+        for(String[] line : lines) {
+            if(numOfErrors == 3)
+                throw new IOException("Detected 3 Errors: This is not a valid combo file.");
+            try {
+                tmpLine = new ComboLine(line);
+                comboLines.add(tmpLine);
+            } catch (Exception e) {
+                e.initCause(new Throwable("Line [" + lineNumber +  "] : " + Arrays.toString(line)));
+                e.printStackTrace();
+                numOfErrors ++;
+            }
+            lineNumber++;
+        }
+
+        return comboLines;
     }
 
     /**

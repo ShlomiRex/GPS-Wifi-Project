@@ -2,9 +2,11 @@ package CSV.Wigle.Data;
 
 import CSV.Data.GeoPoint;
 import CSV.Data.WifiSpectrum;
+import CSV.Enums.DateFormats;
 import CSV.Enums.EWigleCSVHeader_FieldsHeader;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +36,7 @@ public class WigleCSVData extends ArrayList<WigleWifiData> {
         WigleWifiData wigleWifiData;
 
         for(int i = dataIndex; i < csvLines.size(); i++) {
-            firstSeen = getDate(csvLines.get(i)[EWigleCSVHeader_FieldsHeader.FirstSeen.column]);
+            firstSeen = DateFormats.parse(csvLines.get(i)[EWigleCSVHeader_FieldsHeader.FirstSeen.column]);
             mac = csvLines.get(i)[EWigleCSVHeader_FieldsHeader.MAC.column];
             ssid = csvLines.get(i)[EWigleCSVHeader_FieldsHeader.SSID.column];
 
@@ -76,29 +78,6 @@ public class WigleCSVData extends ArrayList<WigleWifiData> {
 //
 //        }
 
-    }
-
-    private Date getDate(String str) {
-
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat format2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        SimpleDateFormat format3 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        Date date = null;
-        try {
-            date = format2.parse(str);
-        } catch (Exception e) {
-            try {
-                date = format1.parse(str);
-            } catch (Exception e1) {
-                try {
-                    date = format3.parse(str);
-                } catch (Exception e2) {
-                    e1.printStackTrace();
-                    System.err.println("Error parsing: " + str);
-                }
-            }
-        }
-        return date;
     }
 
     public void sortBy_FirstSeen() {

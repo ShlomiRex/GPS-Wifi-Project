@@ -1,13 +1,19 @@
 package CSV.Combo;
 
 import CSV.Data.AP_WifiData;
+import CSV.Data.GeoPoint;
+import CSV.Data.WifiSpectrum;
+import CSV.Enums.DateFormats;
+import CSV.Enums.EComboDatas;
 import CSV.Wigle.Data.WigleWifiData;
-import CSV.Wigle.WigleCSV;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.sun.istack.NotNull;
+import org.omg.CORBA.ExceptionList;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class ComboLine extends ArrayList<AP_WifiData> {
@@ -15,7 +21,7 @@ public class ComboLine extends ArrayList<AP_WifiData> {
     public String model, device;
 
     /**
-     *
+     * Call this function if conversion is from WIGLE CSV.
      * @param datas - All data (All ap wifi data)
      * @param model - Model of all of them (in same CSV) [With '=' sign]
      * @param device - Device of all of them (in same CSV) [With '=' sign]
@@ -26,6 +32,59 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         this.device = device;
     }
 
+    /**
+     * Call this function if the conversion if from COMBO LINE.
+     *  This constuctor only works for COMBO FILE and NOT WIGLE FILE.
+     * @param comboLine - A combo line. (Can be invalid, but throws.)
+     * @throws Exception - Throws exception if line is not combo line.
+     */
+    public ComboLine(String[] comboLine) throws Exception {
+        if(comboLine == null)
+            throw new Exception("Null line.");
+        if(comboLine.length <= 6 || comboLine.length > 46)
+            throw new Exception("Invalid combo line size [" + comboLine.length + "] : " + Arrays.toString(comboLine));
+        Date firstSeen = DateFormats.parse(comboLine[0]);
+
+        ArrayList<AP_WifiData> datas = new ArrayList<>();
+        int numOfDatas = Integer.parseInt(comboLine[EComboDatas.NumOfDatas.column]);
+
+        int startingDataCol = EComboDatas.StartingDataColumn.column;
+        int endDataCol = startingDataCol-1 + numOfDatas*4;
+
+
+        String[] tempWifiDataLine = new String[4];
+        AP_WifiData tempWifiData;
+
+
+        String mac;
+        String ssid;
+        WifiSpectrum wifiSpectrum;
+        GeoPoint location;
+        double channel, rssi;
+
+        double lat, lon, alt;
+        lat = Double.parseDouble(comboLine[EComboDatas.Lat.column]);
+        lon = Double.parseDouble(comboLine[EComboDatas.Lon.column]);
+        alt = Double.parseDouble(comboLine[EComboDatas.Alt.column]);
+
+        for(int i = startingDataCol; i < endDataCol-4; i += 4) {
+            tempWifiDataLine[0] = comboLine[i];
+            tempWifiDataLine[1] = comboLine[i+1];
+            tempWifiDataLine[2] = comboLine[i+2];
+            tempWifiDataLine[3] = comboLine[i+3];
+
+            mac = tempWifiDataLine[0];
+            ssid = tempWifiDataLine[1];
+            channel = Double.parseDouble(tempWifiDataLine[2]);
+            rssi = Double.parseDouble(tempWifiDataLine[3]);
+            location = new GeoPoint(lat, lon, alt);
+
+            wifiSpectrum = new WifiSpectrum(rssi, channel);
+            tempWifiData = new AP_WifiData(firstSeen, mac, ssid, wifiSpectrum, location);
+            add(tempWifiData);
+        }
+    }
+
     public void print() {
         System.out.println(this);
     }
@@ -33,7 +92,7 @@ public class ComboLine extends ArrayList<AP_WifiData> {
     /** Returns String as in CSV string. (With commas)**/
     @Override
     public String toString() {
-        String[] line = getLine();
+        String[] line = asArray();
         String result = "";
         for(int i = 0; i < line.length-1; i++) {
             result += line[i] +",";
@@ -42,8 +101,7 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         return result;
     }
 
-    /**  Without commas. **/
-    public String[] getLine() {
+    public String[] asArray() {
         if(size() == 0)
             return null;
 
@@ -71,6 +129,6 @@ public class ComboLine extends ArrayList<AP_WifiData> {
     }
 
     public void appendToWriter(CSVWriter writer) {
-        writer.writeNext(getLine());
+        writer.writeNext(asArray());
     }
 }

@@ -22,44 +22,20 @@ public class ComboCSV extends AbstractCSV{
     public ArrayList<ComboLine> wigleCSVArrayList;
     public ComboLines comboLines;
 
-//    /**
-//     *
-//     * @param csvsFolder - Folder containing wigle csvs to be converted.
-//     * @param fileToWrite - Write to this file.
-//     * @throws IOException - If problem reading file or file doesn't exists.
-//     */
-//    public ComboCSV(File fileToWrite, File csvsFolder) throws IOException {
-//        this(fileToWrite, FolderUtils.getWigles(csvsFolder));
-//    }
-
-//    /**
-//     *
-//     * @param fileToWrite - Write to this file.
-//     * @param wigleCSVList - List of wigle csv to write.
-//     * @throws IOException
-//     */
-//    public ComboCSV(File fileToWrite ,List<WigleCSV> wigleCSVList) throws IOException {
-//        super(fileToWrite.getAbsolutePath());
-//        this.wigleCSVArrayList = new ArrayList<>();
-//        this.comboLines = new ComboLines(wigleCSVList);
-//        comboLines.write(this);
-//        lines = read(this);
-//    }
-
     /**
-     *
-     * @param fileToWrite - Write to this file.
-     * @param wigleCSVList - List of wigle csv to write.
-     * @param takeStrongest10 - True if want 10 elements in each combo line.
+     * Takes Wigle CSV (single csv) and converts it to Combo CSV.
+     * @param fileToWrite - Write to this file as combo.
+     * @param wigleCSV - A signle wigle csv to read.
+     * @param takeStrongest10 - True if want 10 elements in each combo line. (Hint: Put true)
      * @throws IOException
      */
-    public ComboCSV(File fileToWrite ,WigleCSV wigleCSVList, boolean takeStrongest10) throws IOException {
+    public ComboCSV(File fileToWrite ,WigleCSV wigleCSV, boolean takeStrongest10) throws IOException {
         //set this csv file as file we write to.
         super(fileToWrite.getAbsolutePath());
 
         System.out.println("Initializing combo csv...");
         //set combo lines
-        this.comboLines = new ComboLines(wigleCSVList);
+        this.comboLines = new ComboLines(wigleCSV);
         //write combo
         comboLines.write(this);
         //init csv lines
@@ -68,6 +44,23 @@ public class ComboCSV extends AbstractCSV{
 
         if(takeStrongest10)
             filterStrongestRSSI();
+    }
+
+    /**
+     *
+     * @param comboCSVFile - A File which looks like BM2, BM3.
+     * @throws IOException
+     */
+    public ComboCSV(File comboCSVFile) throws IOException {
+        super(comboCSVFile);
+        System.out.println("Initializing combo csv...");
+        try {
+        this.comboLines = new ComboLines(this.getLines()); }
+        catch (Exception e) {
+            e.initCause(new Throwable("Error at file: " + comboCSVFile.getAbsolutePath()));
+            throw e;
+        }
+        System.out.println("CSV Combo initialized: " + comboCSVFile.getAbsolutePath());
     }
 
     /**
@@ -174,5 +167,15 @@ public class ComboCSV extends AbstractCSV{
         }
 
         return all;
+    }
+
+    public ComboLine getLineBy_NoGPSMac(String mac) {
+        for(ComboLine comboLine : comboLines) {
+            for(AP_WifiData ap : comboLine) {
+                if(ap.mac.equals(mac))
+                    return comboLine;
+            }
+        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public interface IAbstractCSV {
 
@@ -40,12 +41,6 @@ public interface IAbstractCSV {
      */
     void print();
 
-//    /**
-//     *
-//     * @return - Returns a pair of header and its associate index line.<br>
-//     *     EXAMPLE: In wigle csv, the WIGLE header is the line number 0,the FIELDS header is the line number 1<br>
-//     *     Size of both arrays are always the same.
-//     */
-//    Pair<AbstractHeader[], Integer[]> getHeaders() throws IOException;
+    List<String[]> getLines();
 
 }

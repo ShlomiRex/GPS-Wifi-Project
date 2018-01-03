@@ -1,8 +1,10 @@
 package CSV.Data.Basic;
 
+import CSV.Combo.ComboLine;
 import Utils.FileUtils;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
+import com.sun.istack.NotNull;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -17,7 +19,7 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
     protected List<String[]> lines;
 
     /**
-     * Reads from CSV file. <br> Doesn't check if the file is actually CSV.
+     * Reads the file and init lines. <br> Doesn't check anything. <br> If file doesn't exists, creates new.
      * @param filePath Path to CSV file.
      * @throws IOException - If problem reading file or file doesn't exists.
      */
@@ -26,6 +28,13 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
         File f = new File(filePath);
         if(f.exists() == false)
             f.createNewFile();
+        lines = read(this);
+    }
+
+    public AbstractCSV(@NotNull  File fileOfCSV) throws IOException {
+        super(fileOfCSV.getAbsolutePath());
+        if(fileOfCSV.exists() == false)
+            throw new IllegalArgumentException("No such file:" + fileOfCSV.getAbsolutePath());
         lines = read(this);
     }
 
@@ -93,5 +102,12 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
         return lines.get(index);
     }
 
-
+    /**
+     * Check if CSV is valid. NOTE: ALWAYS TRUE , AS THERE NO CONDITIONS
+     * @return
+     */
+    @Override
+    public boolean checkValidCSV() {
+        return true;
+    }
 }

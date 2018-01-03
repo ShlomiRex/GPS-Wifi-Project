@@ -1,7 +1,9 @@
 package Utils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 public abstract class FileUtils {
     public static String getExtension(File file) {
@@ -14,6 +16,10 @@ public abstract class FileUtils {
         return extension;
     }
 
+    /**
+     * May return null.
+     * @return
+     */
     public static File getFileFromUser() {
         File result;
         //Create a file chooser
@@ -38,6 +44,18 @@ public abstract class FileUtils {
         chooser.showOpenDialog(null);
         //In response to a button click:
         return chooser.getSelectedFile();
+    }
+
+    /**
+     * Opens in explorer the file / folder.
+     * @param file
+     */
+    public static void openFile(File file) throws IOException {
+        if(file == null)
+            return;
+
+        Desktop desktop = Desktop.getDesktop();
+        desktop.open(file);
     }
 
 }
