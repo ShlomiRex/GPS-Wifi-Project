@@ -34,6 +34,9 @@ public class MainPanel extends JPanel {
         }
         initDatabase();
 
+        panel_Database = new Panel_Database();
+        panel_Database.setVisible(false);
+
         panel_IO = new Panel_IO();
         add(panel_IO);
 
@@ -45,13 +48,11 @@ public class MainPanel extends JPanel {
         add(panel_Path);
         panel_Path.setVisible(false);
 
-        panel_Database = new Panel_Database();
-        add(panel_Database);
-        panel_Database.setVisible(false);
-
         panel_SelectedOptions = new Panel_SelectedOptions();
         add(panel_SelectedOptions);
         panel_SelectedOptions.setVisible(false);
+
+        add(panel_Database);
 
     }
 

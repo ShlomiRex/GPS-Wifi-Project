@@ -11,22 +11,25 @@ public interface IAbstractCSV {
     /**
      * Format file and write to it the CSV.
      * @param file
+     * @return Count of lines written.
      * @throws IOException
      */
-    void writeToFile(File file) throws IOException;
+    int writeToFile(File file) throws IOException;
 
     /**
      * Append CSV lines to another file, at the end of the file.
      * @param file
+     * @return Count of lines written.
      * @throws IOException
      */
-    void appendToFile(File file) throws IOException;
+    int appendToFile(File file) throws IOException;
 
     /**
      * Write to file with existing writer.
+     * @return Count of lines written.
      * @param writer
      */
-    void appendToWriter(CSVWriter writer);
+    int appendToWriter(CSVWriter writer);
 
     /**
      *

@@ -30,6 +30,8 @@ public abstract class FolderUtils {
     }
 
     public static List<WigleCSV> getWigles(File folderOfCSVs) {
+        if(folderOfCSVs == null)
+            return null;
         if(folderOfCSVs.isFile())
             throw new IllegalArgumentException("The file: " + folderOfCSVs + " is not a folder!");
 

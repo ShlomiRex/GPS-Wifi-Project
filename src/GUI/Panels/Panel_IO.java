@@ -17,7 +17,7 @@ import static GUI.MainPanel.setAllPanelsVisible;
 public final class Panel_IO extends JPanel implements ActionListener{
     public JButton btn_IOInput_ChooseFolder, btn_IOInput_ChooseFile_Combo;
     public Panel_IO() {
-        btn_IOInput_ChooseFolder = new JButton("Choose folder");
+        btn_IOInput_ChooseFolder = new JButton("Choose folder of wigles");
         btn_IOInput_ChooseFolder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

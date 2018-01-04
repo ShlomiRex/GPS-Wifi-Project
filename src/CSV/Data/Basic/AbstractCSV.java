@@ -1,13 +1,11 @@
 package CSV.Data.Basic;
 
-import CSV.Combo.ComboLine;
 import Utils.FileUtils;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.sun.istack.NotNull;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,25 +37,28 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
     }
 
     @Override
-    public void writeToFile(File file) throws IOException {
+    public int writeToFile(File file) throws IOException {
         System.out.println("Writing to file: " + file.getAbsolutePath());
         CSVWriter writer = new CSVWriter(new FileWriter(file));
         writer.writeAll(lines);
         writer.close();
+        return lines.size();
     }
 
     @Override
-    public void appendToFile(File file) throws IOException {
+    public int appendToFile(File file) throws IOException {
         CSVWriter writer = new CSVWriter(new FileWriter(file, true));
         for(String[] line : lines)
             writer.writeNext(line);
         writer.close();
+        return lines.size();
     }
 
     @Override
-    public void appendToWriter(CSVWriter writer) {
+    public int appendToWriter(CSVWriter writer) {
         for(String[] line : lines)
             writer.writeNext(line);
+        return lines.size();
     }
 
     @Override

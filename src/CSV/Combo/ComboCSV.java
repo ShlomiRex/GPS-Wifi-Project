@@ -63,6 +63,10 @@ public class ComboCSV extends AbstractCSV{
         //TODO: COMBINE ALL WIGE INTO 1 COMBO
     }
 
+    public ComboCSV(String outFilePath, WigleCSV wigleCSV) throws IOException {
+        this(new File(outFilePath), wigleCSV, false);
+    }
+
     /**
      * This csv is always valid. (For now)
      * @return

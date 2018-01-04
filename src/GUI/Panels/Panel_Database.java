@@ -3,7 +3,9 @@ package GUI.Panels;
 import CSV.Combo.ComboCSV;
 import CSV.Wigle.WigleCSV;
 import GUI.Logic.Database;
+import GUI.MainPanel;
 import Utils.FileUtils;
+import sun.applet.Main;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -26,7 +28,10 @@ public final class Panel_Database extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 try {
                     FileUtils.openFile((File)database);
+                    MainPanel.database.updateDatas();
                 } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (Exception e1) {
                     e1.printStackTrace();
                 }
             }
@@ -42,6 +47,11 @@ public final class Panel_Database extends JPanel{
                 if(dialogResult == JOptionPane.YES_OPTION){
                     database.delete();
                     System.out.println("\n\nDatabase Deleted.\n\n");
+                    try {
+                        MainPanel.database.updateDatas();
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
                 }
 
             }
@@ -53,11 +63,15 @@ public final class Panel_Database extends JPanel{
         setBorder(BorderFactory.createTitledBorder("Database"));
 
         JPanel statisticsPanel = new JPanel();
-        lbl_Statistics_LinesCount = new JLabel("Line count: " + database.lineCount());
+        lbl_Statistics_LinesCount = new JLabel("");
+        updateStatistics();
         statisticsPanel.add(lbl_Statistics_LinesCount);
         statisticsPanel.setBorder(BorderFactory.createTitledBorder("Statistics"));
 
         add(statisticsPanel);
     }
 
+    public void updateStatistics() {
+        lbl_Statistics_LinesCount.setText("Line count: " + MainPanel.database.datas.size());
+    }
 }
