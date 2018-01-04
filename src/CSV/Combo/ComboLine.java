@@ -131,4 +131,13 @@ public class ComboLine extends ArrayList<AP_WifiData> {
     public void appendToWriter(CSVWriter writer) {
         writer.writeNext(asArray());
     }
+
+    public Date getFirstSeen() {
+        return get(0).firstSeen;
+    }
+
+    public GeoPoint getLocation() {
+        return get(0).location;
+    }
+
 }

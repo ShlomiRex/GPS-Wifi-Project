@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public abstract class FileUtils {
     public static String getExtension(File file) {
@@ -57,5 +58,4 @@ public abstract class FileUtils {
         Desktop desktop = Desktop.getDesktop();
         desktop.open(file);
     }
-
 }

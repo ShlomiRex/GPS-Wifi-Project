@@ -26,4 +26,7 @@ public class AP_WifiData {
     }
 
 
+    public void print() {
+        System.out.println(toString());
+    }
 }

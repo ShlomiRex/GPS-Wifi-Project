@@ -41,7 +41,7 @@ public abstract class FolderUtils {
             try {
                 wigleCSV = new WigleCSV(f.getAbsolutePath());
                 result.add(wigleCSV);
-            } catch (IOException e) {
+            } catch (Throwable e) {
                 //do nothing
             }
         }

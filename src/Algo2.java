@@ -56,10 +56,7 @@ public class Algo2 {
             input_macs[i] = input[i].mac;
         //filter
         lines = lines.filterOR_by_macs(input_macs);
-
-        for(int i = 0; i < lines.size(); i++) {
-            System.out.println(lines.get(i).toString());
-        }
+        lines.print();
 
         double[] weights_in_line = new double[3];
         int lineIndex = 0;

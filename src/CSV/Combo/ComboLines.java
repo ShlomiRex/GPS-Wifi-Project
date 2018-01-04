@@ -55,8 +55,8 @@ public class ComboLines extends ArrayList<ComboLine> {
                 tmpLine = new ComboLine(line);
                 comboLines.add(tmpLine);
             } catch (Exception e) {
-                e.initCause(new Throwable("Line [" + lineNumber +  "] : " + Arrays.toString(line)));
-                e.printStackTrace();
+                //e.initCause(new Throwable("Line [" + lineNumber +  "] : " + Arrays.toString(line)));
+                //e.printStackTrace();
                 numOfErrors ++;
             }
             lineNumber++;
@@ -180,4 +180,49 @@ public class ComboLines extends ArrayList<ComboLine> {
             }
         }
     }
+
+    /**
+     * Filters lines and returns lines containing ap_wifidata which has any of the input mac address
+     * O(n*m) - n lines, m is max combo size
+     * @param macs
+     * @return
+     */
+    public ComboLines filterOR_by_macs(String[] macs) {
+        ComboLines comboLines = new ComboLines();
+        boolean founded = false;
+        for(ComboLine comboLine : comboLines) {
+            for(AP_WifiData ap : comboLine) {
+                ap.print();
+                for(String mac : macs) {
+                    if(ap.mac.equals(mac)) {
+                        comboLines.add(comboLine);
+                        founded = true;
+                        break;
+                    }
+                }
+                if(founded)
+                    break;
+            }
+        }
+        return comboLines;
+    }
+
+    public void print() {
+        int lineindex = 1;
+        for (ComboLine comboLine : this) {
+            try {
+                comboLine.print();
+                lineindex++;
+            }         catch (Exception e) {
+                e.printStackTrace();
+                break;
+            }
+        }
+
+    }
+
+    public void filterBy_FirstSeen(Date firstSeenFrom, Date firstSeenTo) {
+
+    }
+
 }

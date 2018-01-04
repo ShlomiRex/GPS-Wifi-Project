@@ -14,6 +14,5 @@ public class MainWindow extends JFrame {
         setDefaultLookAndFeelDecorated(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setVisible(true);
     }
 }
