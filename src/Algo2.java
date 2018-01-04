@@ -40,6 +40,12 @@ public class Algo2 {
         return w;
     }
 
+    //Input: MAC, RSSI
+    //Output: Pi
+    //ALGO 2: Take mac, search in all combo lines, take all ap_Wifidatas,
+    //if thre are less than 3 macs found, put -120 in rssi (yellow)
+    //IF there are more than 3 macs found
+
     private double calcDiff(double input_sig, double combo_wifi_signal) {
         if(combo_wifi_signal == no_signal) {
             return dif_no_signal;
