@@ -7,18 +7,21 @@ import GUI.MainPanel;
 import Utils.FileUtils;
 import sun.applet.Main;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import static GUI.MainPanel.*;
 
 public final class Panel_Database extends JPanel{
 
-    public JButton btn_OpenDatabase, btn_DeleteDatabase;
+    public JButton btn_OpenDatabase, btn_DeleteDatabase, btn_ExportDB;
     public JLabel lbl_Statistics_LinesCount;
 
     public Panel_Database() {
@@ -57,9 +60,18 @@ public final class Panel_Database extends JPanel{
             }
         });
 
+        btn_ExportDB = new JButton("EXport DB");
+        btn_ExportDB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportDB_Dialog();
+            }
+        });
+
 
         add(btn_OpenDatabase);
         add(btn_DeleteDatabase);
+        add(btn_ExportDB);
         setBorder(BorderFactory.createTitledBorder("Database"));
 
         JPanel statisticsPanel = new JPanel();
@@ -73,5 +85,32 @@ public final class Panel_Database extends JPanel{
 
     public void updateStatistics() {
         lbl_Statistics_LinesCount.setText("Line count: " + MainPanel.database.datas.size());
+    }
+
+    private void exportDB_Dialog() {
+        JOptionPane.showConfirmDialog(null,
+                exportDB_Dialog_GetPanel(),
+                "JOptionPane Example : ",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private JPanel exportDB_Dialog_GetPanel() {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Java Technology Dive Log");
+        ImageIcon image = null;
+        try {
+            image = new ImageIcon(ImageIO.read(
+                    new URL("http://i.imgur.com/6mbHZRU.png")));
+        } catch(MalformedURLException mue) {
+            mue.printStackTrace();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        label.setIcon(image);
+        panel.add(label);
+
+        return panel;
     }
 }

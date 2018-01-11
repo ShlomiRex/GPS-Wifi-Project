@@ -10,11 +10,11 @@ import java.util.Date;
  * Represents 1 line of Wigle CSV.
  */
 public class WigleWifiData extends AP_WifiData {
-    public String type, authModel;
+    public String type, authMode;
     public WigleWifiData(Date firstSeen, String mac, String ssid, WifiSpectrum wifiSpectrum, GeoPoint location, String authMode, String type) {
         super(firstSeen, mac, ssid, wifiSpectrum, location);
         this.type = type;
-        this.authModel = authMode;
+        this.authMode = authMode;
     }
 
     public int compareFirstSeen(WigleWifiData other) {

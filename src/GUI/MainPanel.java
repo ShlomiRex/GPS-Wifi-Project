@@ -25,6 +25,8 @@ public class MainPanel extends JPanel {
     public static Panel_Debug panel_Debug;
     public static Panel_SelectedOptions panel_SelectedOptions;
 
+    public static JPanel panel_wrapper;
+
     public MainPanel() throws IOException {
         super();
         try {
@@ -33,6 +35,10 @@ public class MainPanel extends JPanel {
             e.printStackTrace();
         }
         initDatabase();
+
+        setLayout(new GridLayout(0,2));
+        panel_wrapper = new JPanel();
+
 
         panel_Database = new Panel_Database();
         panel_Database.setVisible(false);
@@ -54,6 +60,7 @@ public class MainPanel extends JPanel {
 
         add(panel_Database);
 
+        panel_wrapper.add(this);
     }
 
     private void initDatabase() throws IOException {
