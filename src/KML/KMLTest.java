@@ -14,11 +14,12 @@ public class KMLTest {
 
     @Test
     public void test() throws IOException {
-        File chosenFile = FileUtils.getFileFromUser();
-        String path = chosenFile.getAbsolutePath();
+        String path = Paths.DATA_MOODLE_DATA_LENOVO + "/WigleWifi_20171027162929.csv";
         WigleCSV wigleCSV = new WigleCSV(path);
+        System.out.println(wigleCSV.csvData.size());
 
         KML kml = new KML(Paths.OUT_TESTS+"/kmlTest.kml", wigleCSV);
+        kml.generateKML();
     }
 
 }

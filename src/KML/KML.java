@@ -17,6 +17,7 @@ public class KML extends File {
     private Document doc;
     private Folder folder;
     private Kml kml;
+    static int count = 0;
 
     /**
      *
@@ -49,8 +50,9 @@ public class KML extends File {
         Placemark placemark = folder.createAndAddPlacemark();
         placemark.setDescription(getDescription(wigleWifiData));
         //placemark.setDescription(wrapCDATA("<b>Hello</b>"));
-        placemark.setName(wigleWifiData.ssid);
+        placemark.setName("AP #" + count);
         placemark.createAndSetPoint().addToCoordinates(wigleWifiData.location.lon, wigleWifiData.location.lat); // set coordinates
+        count ++;
     }
 
     public static String getDescription(WigleWifiData wigleWifiData) {
