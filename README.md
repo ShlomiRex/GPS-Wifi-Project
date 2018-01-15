@@ -2,6 +2,9 @@
 A project for second year of engineering.
 Collaborators: Shlomi
 
+Project REPORT FILE at: https://docs.google.com/document/d/1pKIuJ5n64tWMpdCtHq2jSj9tz3U8TbN9sdYAAVnDaYo/edit?usp=sharing
+This file contains: User guides, Algorithems, GUI, reports, 
+
 # F.A.Q
 Q: Why are you using ArrayList of ArrayList of objects insted of string?
 A: When we read CSVPckg file and want to use the objects, we need to convert each field to his type. So, less time is spend converting back and forth objects and testing them if they OK. This decision is based on sorting the CSVPckg. If we sort, each iteration will need to convert the strings to objects, taking inormous time.
