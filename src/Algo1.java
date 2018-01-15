@@ -26,16 +26,14 @@ public abstract class Algo1 {
         System.out.printf("Location: " + location.toString());
     }
     /**
-     * Both must have same size.
+     * Calculates GPS location by given array of routers and their location and each location his RSSI.
      * @param geoPoints
      * @param signals
-     * @return Null if sizes are not equal.
+     * @return Null if sizes are not equal. Each geoPoint must be coresponse to signal at the same index.
+     * @deprecated - Do not use if you know what to do.
      */
     public static GeoPoint algo1(GeoPoint[] geoPoints, double[] signals) {
-        if(geoPoints.length != signals.length)
-            return null;
         int size = geoPoints.length;
-        double lat, lon, alt;
         double wLat, wLon, wAlt;
         double[] weights = new double[size];
         double sumWLat = 0, sumWLon = 0, sumWAlt = 0;
@@ -55,6 +53,7 @@ public abstract class Algo1 {
     }
 
     /**
+     * Calculate GeoPoint of spesific router by given MAC address in data of comboLiens. Take K strongest matching lines.
      * @since MATALA 2 QUESTION 2
      * @param mac
      * @param k - Take 'k' strongest matching mac datas. (usually 4 or 3 as descrobed in matala 2)

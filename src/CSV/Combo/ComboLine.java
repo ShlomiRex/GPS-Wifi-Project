@@ -73,8 +73,8 @@ public class ComboLine extends ArrayList<AP_WifiData> {
             tempWifiDataLine[2] = comboLine[i+2];
             tempWifiDataLine[3] = comboLine[i+3];
 
-            mac = tempWifiDataLine[0];
-            ssid = tempWifiDataLine[1];
+            ssid = tempWifiDataLine[0];
+            mac = tempWifiDataLine[1]; //i had problem with this, i put 0 insted of 1! LOL
             channel = Double.parseDouble(tempWifiDataLine[2]);
             rssi = Double.parseDouble(tempWifiDataLine[3]);
             location = new GeoPoint(lat, lon, alt);
@@ -140,4 +140,15 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         return get(0).location;
     }
 
+    /**
+     * May return null if out of bounds.
+     * @param index
+     * @return
+     */
+    @Override
+    public AP_WifiData get(int index) {
+        if(index > size() || index < 0)
+            return null;
+        return super.get(index);
+    }
 }

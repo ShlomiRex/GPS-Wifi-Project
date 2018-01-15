@@ -50,7 +50,7 @@ public class ComboCSV extends AbstractCSV{
         super(comboCSVFile);
         System.out.println("Initializing combo csv...");
         try {
-        this.comboLines = new ComboLines(this.getLines()); }
+            this.comboLines = new ComboLines(this.getLines()); }
         catch (Exception e) {
             e.initCause(new Throwable("Error at file: " + comboCSVFile.getAbsolutePath()));
             throw e;
