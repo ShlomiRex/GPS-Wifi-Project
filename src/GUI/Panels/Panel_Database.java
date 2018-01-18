@@ -1,11 +1,7 @@
 package GUI.Panels;
 
-import CSV.Combo.ComboCSV;
-import CSV.Wigle.WigleCSV;
-import GUI.Logic.Database;
 import GUI.MainPanel;
 import Utils.FileUtils;
-import sun.applet.Main;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 import static GUI.MainPanel.*;
 
@@ -84,7 +79,7 @@ public final class Panel_Database extends JPanel{
     }
 
     public void updateStatistics() {
-        lbl_Statistics_LinesCount.setText("Line count: " + MainPanel.database.datas.size());
+        lbl_Statistics_LinesCount.setText("Line count: " + MainPanel.database.lineCount);
     }
 
     private void exportDB_Dialog() {

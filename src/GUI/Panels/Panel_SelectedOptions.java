@@ -2,17 +2,12 @@ package GUI.Panels;
 
 import CSV.Combo.ComboCSV;
 import CSV.Wigle.WigleCSV;
-import GUI.GUI;
-import GUI.Logic.Database;
 import GUI.Logic.SelectedFileType;
-import GUI.MainPanel;
-import Utils.FileUtils;
 import Utils.FolderUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 import static GUI.MainPanel.*;
 import static GUI.GUI.selected;

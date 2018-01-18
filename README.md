@@ -3,7 +3,7 @@ A project for second year of engineering.
 Collaborators: Shlomi
 
 Project REPORT FILE at: https://docs.google.com/document/d/1pKIuJ5n64tWMpdCtHq2jSj9tz3U8TbN9sdYAAVnDaYo/edit?usp=sharing
-This file contains: User guides, Algorithems, GUI, reports, 
+This file contains: User guides, Algorithems, GUI, reports,
 
 # F.A.Q
 Q: Why are you using ArrayList of ArrayList of objects insted of string?

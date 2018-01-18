@@ -17,13 +17,11 @@ import java.util.List;
 public abstract class Algo1 {
 
     public static void main(String[] args) throws IOException {
-        String csvPath = Paths.WIGLE_DATA + "/1_algo1.csv";
-        WigleCSV wigleCSV = new WigleCSV(csvPath);
-        ComboCSV comboCSV = new ComboCSV(new File(Paths.OUT_TESTS + "/algo1test.csv"), wigleCSV, true);
-        String mac = "b4:ee:b4:36:d2:b0";
-        int k = 3;
-        GeoPoint location = algo1(comboCSV.comboLines, mac, k);
-        System.out.printf("Location: " + location.toString());
+        int i = 0;
+        for(String s : args) {
+            System.out.println("Arg["+i+"] = " + s);
+            i++;
+        }
     }
     /**
      * Calculates GPS location by given array of routers and their location and each location his RSSI.

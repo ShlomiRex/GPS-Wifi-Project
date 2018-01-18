@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ComboLine extends ArrayList<AP_WifiData> {
 
-    public String model, device;
+    private String id, device, model;
 
     /**
      * Call this function if conversion is from WIGLE CSV.
@@ -30,6 +30,7 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         addAll(datas);
         this.model = model;
         this.device = device;
+        this.id = model + "_" + device;
     }
 
     /**
@@ -44,17 +45,14 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         if(comboLine.length <= 6 || comboLine.length > 46)
             throw new Exception("Invalid combo line size [" + comboLine.length + "] : " + Arrays.toString(comboLine));
         Date firstSeen = DateFormats.parse(comboLine[0]);
+        String id = comboLine[1];
 
-        ArrayList<AP_WifiData> datas = new ArrayList<>();
         int numOfDatas = Integer.parseInt(comboLine[EComboDatas.NumOfDatas.column]);
 
         int startingDataCol = EComboDatas.StartingDataColumn.column;
         int endDataCol = startingDataCol-1 + numOfDatas*4;
 
-
-        String[] tempWifiDataLine = new String[4];
         AP_WifiData tempWifiData;
-
 
         String mac;
         String ssid;
@@ -68,15 +66,10 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         alt = Double.parseDouble(comboLine[EComboDatas.Alt.column]);
 
         for(int i = startingDataCol; i < endDataCol-4; i += 4) {
-            tempWifiDataLine[0] = comboLine[i];
-            tempWifiDataLine[1] = comboLine[i+1];
-            tempWifiDataLine[2] = comboLine[i+2];
-            tempWifiDataLine[3] = comboLine[i+3];
-
-            ssid = tempWifiDataLine[0];
-            mac = tempWifiDataLine[1]; //i had problem with this, i put 0 insted of 1! LOL
-            channel = Double.parseDouble(tempWifiDataLine[2]);
-            rssi = Double.parseDouble(tempWifiDataLine[3]);
+            ssid = comboLine[i];
+            mac = comboLine[i+1]; //i had problem with this, i put 0 insted of 1! LOL
+            channel = Double.parseDouble(comboLine[i+2]);
+            rssi = Double.parseDouble(comboLine[i+3]);
             location = new GeoPoint(lat, lon, alt);
 
             wifiSpectrum = new WifiSpectrum(rssi, channel);
@@ -150,5 +143,9 @@ public class ComboLine extends ArrayList<AP_WifiData> {
         if(index > size() || index < 0)
             return null;
         return super.get(index);
+    }
+
+    public String getId() {
+        return model;
     }
 }

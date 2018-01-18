@@ -73,7 +73,7 @@ public class ComboLines extends ArrayList<ComboLine> {
      * 			EACH COMBO: TIME, ID, LAT, LON, ALT<br>
      *
      */
-    private static ComboLines getComboLines(WigleCSV wigleCSV) {
+    private static ComboLines getComboLines(WigleCSV wigleCSV)  {
         //SORT BY:
         //TIME, ID, LAT, LON, ALT
 
@@ -162,7 +162,7 @@ public class ComboLines extends ArrayList<ComboLine> {
     }
 
     /**
-     * Takes all combos with size exceeds 10 and filters all of the combo datas by RSSI.
+     * Takes all combos with size exceeds 10 and filters all of the combo data by RSSI.
      */
     public void filterStrongestRSSI() {
         for(ComboLine l : this) {

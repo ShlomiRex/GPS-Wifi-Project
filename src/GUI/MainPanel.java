@@ -1,19 +1,11 @@
 package GUI;
 
-import CSV.Combo.ComboCSV;
-import GUI.Logic.Database;
-import GUI.Logic.Selected;
-import GUI.Logic.SelectedFileType;
+import Database.Database;
 import GUI.Panels.*;
-import Utils.FileUtils;
 import Utils.Paths;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 
 public class MainPanel extends JPanel {
@@ -68,7 +60,7 @@ public class MainPanel extends JPanel {
         File defaultFileOut = new File(Paths.OUT + defaultFileName);
         defaultFileOut.createNewFile();
 
-        database = new Database(defaultFileOut, Database.Type.Wigle);
+        database = new Database(defaultFileOut);
     }
 
     public static void setAllPanelsVisible() {

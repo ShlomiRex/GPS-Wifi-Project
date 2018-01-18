@@ -90,6 +90,10 @@ public class Algo2 {
 //        return Algo1.algo1(geoPointsOfStrongest, signalsOfStrongest);
 //    }
 
+    public static void main(String[] args) {
+
+    }
+
     public static GeoPoint algo2(ComboLines comboLines, Algo2UserInput input1, Algo2UserInput input2, Algo2UserInput input3) {
         if(input1 == null || input2 == null || input3 == null)
             throw new IllegalArgumentException("Input is null.");
