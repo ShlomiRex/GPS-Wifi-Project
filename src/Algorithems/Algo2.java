@@ -1,13 +1,11 @@
+package Algorithems;
+
 import Algorithems.Data.Algo2UserInput;
-import CSV.Combo.ComboCSV;
 import CSV.Combo.ComboLine;
 import CSV.Combo.ComboLines;
 import CSV.Data.AP_WifiData;
 import CSV.Data.GeoPoint;
-import Utils.Paths;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;

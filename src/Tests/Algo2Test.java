@@ -1,3 +1,6 @@
+package Tests;
+
+import Algorithems.Algo2;
 import Algorithems.Data.Algo2UserInput;
 import CSV.Combo.ComboCSV;
 import CSV.Data.GeoPoint;

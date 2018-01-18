@@ -3,16 +3,21 @@ package Database;
 import CSV.Combo.ComboCSV;
 import CSV.Combo.ComboLine;
 import CSV.Combo.ComboLines;
+import CSV.Data.AP_WifiData;
 import CSV.Data.Basic.AbstractCSV;
+import CSV.Data.GeoPoint;
 import CSV.Wigle.WigleCSV;
 import Database.Concurrency.ComboLineTask;
 import Database.Concurrency.ComboLinesRunner;
 import GUI.MainPanel;
 import Utils.Paths;
+import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -167,14 +172,26 @@ public class Database extends AbstractCSV implements Serializable{
                 .collect(Collectors.toList());
     }
 
-    public String searchRouter_ByMac(String mac) {
+    /**
+     *
+     * @param mac Mac to search.
+     * @return Array of AP_WifiData that has the same mac
+     * @throws InterruptedException
+     */
+    public String[] findRoutersByMac(String mac) throws InterruptedException {
         final int indexFrom = 0;
         final int indexTo = data.size();
+
+        ArrayBlockingQueue<AP_WifiData> macsFound = new ArrayBlockingQueue<AP_WifiData>(100);
 
         ComboLineTask searchMacTask = new ComboLineTask() {
             @Override
             public void run(ComboLine comboLine) {
-                
+                for(int i = 0; i < comboLine.size(); i++) {
+                    if(comboLine.get(i).mac.equals(mac)) {
+                        macsFound.offer(comboLine.get(i));
+                    }
+                }
             }
         };
 
@@ -183,6 +200,33 @@ public class Database extends AbstractCSV implements Serializable{
         ComboLinesRunner runner3 = new ComboLinesRunner((indexFrom/2)+1, (3*(indexFrom/4)), data, searchMacTask);
         ComboLinesRunner runner4 = new ComboLinesRunner((3*(indexFrom/4))+1, indexTo, data, searchMacTask);
 
-        runner1.sta
+        runner1.run();
+        runner2.run();
+        runner3.run();
+        runner4.run();
+
+        runner1.join();
+        runner2.join();
+        runner3.join();
+        runner4.join();
+
+        AP_WifiData[] datasFound = (AP_WifiData[]) macsFound.toArray();
+        String[] result = new String[datasFound.length];
+        for(int i = 0; i < datasFound.length; i++) {
+            result[i] = datasFound[i].location.toString();
+        }
+        return result;
     }
+
+    /**
+     * No gps line is as described in matala 2 question 2
+     * @param no_gps_line
+     * @return
+     */
+    public GeoPoint calculateLocationByNoGPSLine(String no_gps_line) {
+        String[] splitted = no_gps_line.split(",");
+        Algo2
+    }
+
+
 }
