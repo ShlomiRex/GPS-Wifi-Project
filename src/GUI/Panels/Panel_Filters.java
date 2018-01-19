@@ -11,6 +11,7 @@ import CSV.Enums.DateFormats;
 import Database.Filters.Base.AbstractFilter;
 import Database.Filters.ComboLineFilters.*;
 import Database.Filters.OperationFilters.And_Filter;
+import Database.Filters.OperationFilters.Not_Filter;
 import Database.Filters.OperationFilters.Or_Filter;
 import Utils.FileUtils;
 import Utils.FolderUtils;
@@ -24,9 +25,11 @@ public final class Panel_Filters extends JPanel {
     }
 
     private AbstractFilter and_filter1, and_filter2,
-        or_filter1, or_filter2;
+        or_filter1, or_filter2,
+        not_filter1;
     private String and_filter1_String, and_filter2_String,
-        or_filter1_String, or_filter2_String;
+        or_filter1_String, or_filter2_String,
+        not_filter_String;
 
     private JButton btn_filter_ID, btn_filter_Location, btn_filter_Time;
     private Panel_Filters() {
@@ -321,5 +324,54 @@ public final class Panel_Filters extends JPanel {
                 }
             }
         });
-    }
+
+
+
+/** Not Filter **/
+        JPanel panel_filterCreate_NotFilter = new JPanel();
+        JButton btn_filterCreate_Not_ChooseFilter_First = new JButton("Choose Filter");
+        JButton btn_filterCreate_NotFilter = new JButton("Create");
+        JLabel lbl_notFilter_FileName = new JLabel("null");
+
+        btn_filterCreate_Not_ChooseFilter_First.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File filterFile = FileUtils.getFileFromUser();
+                try {
+                    not_filter1 = (AbstractFilter) FileUtils.readObjectFromFile(filterFile);
+                    not_filter_String = filterFile.getName();
+                    lbl_notFilter_FileName.setText(not_filter_String);
+                    lbl_notFilter_FileName.updateUI();
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btn_filterCreate_NotFilter.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Not_Filter not_filter = new Not_Filter(not_filter1);
+                File filterFile = new File(Paths.SAVE_FILTERS+"NOT_Filter_" + not_filter_String);
+                try {
+                    filterFile.createNewFile();
+                    FileUtils.writeObjectToFile(filterFile, not_filter);
+                    JOptionPane.showMessageDialog(null,"Success! \nLocation: " + filterFile);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+
+        panel_filterCreate_NotFilter.add(btn_filterCreate_NotFilter);
+        panel_filterCreate_NotFilter.add(lbl_notFilter_FileName);
+        panel_filterCreate_NotFilter.add(btn_filterCreate_Not_ChooseFilter_First);
+        panel_filterCreate_NotFilter.setBorder(BorderFactory.createTitledBorder("NOT Filter"));
+
+        add(panel_filterCreate_NotFilter);
+    } //cons
+
+
+
 }

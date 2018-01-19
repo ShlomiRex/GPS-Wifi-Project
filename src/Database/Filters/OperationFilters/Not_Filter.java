@@ -4,7 +4,7 @@ import Database.Filters.Base.AbstractFilter;
 
 public class Not_Filter extends AbstractFilter {
     private AbstractFilter filter;
-    public void And_Filter(AbstractFilter filter) {
+    public Not_Filter(AbstractFilter filter) {
         this.filter = filter;
     }
 
