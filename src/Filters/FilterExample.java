@@ -1,9 +1,9 @@
-package Database.Filters;
+package Filters;
 
 import CSV.Combo.ComboLine;
-import Database.Filters.ComboLineFilters.Location_Filter;
-import Database.Filters.OperationFilters.And_Filter;
-import Database.Filters.ComboLineFilters.Time_Filter;
+import Filters.ComboLineFilters.Location_Filter;
+import Filters.OperationFilters.And_Filter;
+import Filters.ComboLineFilters.Time_Filter;
 
 import java.util.Date;
 

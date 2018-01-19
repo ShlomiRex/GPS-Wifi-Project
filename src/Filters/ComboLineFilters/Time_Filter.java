@@ -1,7 +1,7 @@
-package Database.Filters.ComboLineFilters;
+package Filters.ComboLineFilters;
 
 import CSV.Data.AP_WifiData;
-import Database.Filters.Base.AbstractFilter;
+import Filters.Base.AbstractFilter;
 
 import java.util.Date;
 

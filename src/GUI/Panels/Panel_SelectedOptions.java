@@ -3,6 +3,7 @@ package GUI.Panels;
 import CSV.Combo.ComboCSV;
 import CSV.Wigle.WigleCSV;
 import Database.Database;
+import GUI.Logic.Selected;
 import GUI.Logic.SelectedFileType;
 import Utils.FolderUtils;
 
@@ -26,8 +27,8 @@ public final class Panel_SelectedOptions extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("ASD");
-                File selected = Panel_IO.getINSTANCE().selected;
-                SelectedFileType selectedFileType = Panel_IO.getINSTANCE().selectedType;
+                Selected selected = Panel_IO.getINSTANCE().selected;
+                SelectedFileType selectedFileType = selected.type;
                 if(selected == null)
                     return;;
                 System.out.println(selectedFileType.name());

@@ -1,7 +1,7 @@
-package Database.Filters.ComboLineFilters;
+package Filters.ComboLineFilters;
 
 import CSV.Combo.ComboLine;
-import Database.Filters.Base.AbstractFilter;
+import Filters.Base.AbstractFilter;
 
 public class Location_Filter extends AbstractFilter {
 

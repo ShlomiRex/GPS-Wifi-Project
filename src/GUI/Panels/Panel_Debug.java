@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-import static GUI.MainPanel.*;
 
 public final class Panel_Debug extends JPanel {
 

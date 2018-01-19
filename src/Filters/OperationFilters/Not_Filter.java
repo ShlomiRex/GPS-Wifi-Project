@@ -1,6 +1,6 @@
-package Database.Filters.OperationFilters;
+package Filters.OperationFilters;
 
-import Database.Filters.Base.AbstractFilter;
+import Filters.Base.AbstractFilter;
 
 public class Not_Filter extends AbstractFilter {
     private AbstractFilter filter;

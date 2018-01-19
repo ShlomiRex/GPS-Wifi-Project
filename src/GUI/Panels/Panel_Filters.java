@@ -8,13 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import CSV.Enums.DateFormats;
-import Database.Filters.Base.AbstractFilter;
-import Database.Filters.ComboLineFilters.*;
-import Database.Filters.OperationFilters.And_Filter;
-import Database.Filters.OperationFilters.Not_Filter;
-import Database.Filters.OperationFilters.Or_Filter;
+import Filters.Base.AbstractFilter;
+import Filters.ComboLineFilters.*;
+import Filters.OperationFilters.And_Filter;
+import Filters.OperationFilters.Not_Filter;
+import Filters.OperationFilters.Or_Filter;
 import Utils.FileUtils;
-import Utils.FolderUtils;
 import Utils.Paths;
 
 public final class Panel_Filters extends JPanel {

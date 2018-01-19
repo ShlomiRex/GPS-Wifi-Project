@@ -1,4 +1,4 @@
-package Database.Filters.Base;
+package Filters.Base;
 
 import java.io.File;
 import java.io.IOException;

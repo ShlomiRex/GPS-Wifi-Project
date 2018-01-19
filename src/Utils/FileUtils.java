@@ -59,6 +59,8 @@ public abstract class FileUtils {
     }
 
     public static void writeObjectToFile(File file, Object object) throws IOException {
+        if(file == null)
+            throw new IOException("File is null.");
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(object);

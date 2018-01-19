@@ -7,9 +7,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public final class Panel_Database extends JPanel{
 
@@ -82,30 +85,43 @@ public final class Panel_Database extends JPanel{
         lbl_Statistics_LinesCount.setText("Line count: " + Database.getINSTANCE().lineCount);
     }
 
+    private File exportDestination;
     private void exportDB_Dialog() {
-        JOptionPane.showConfirmDialog(null,
+        int result = JOptionPane.showConfirmDialog(null,
                 exportDB_Dialog_GetPanel(),
-                "JOptionPane Example : ",
+                "Choose destination",
                 JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.PLAIN_MESSAGE);
+
+        if(result == JOptionPane.OK_OPTION) {
+            try {
+                File dest = new File(exportDestination.getAbsolutePath()+"/Database.obj");
+                System.out.println("Exporting database to: " + dest.getAbsolutePath());
+                Files.createFile(Paths.get(dest.getAbsolutePath()));
+                final Database database =  Database.getINSTANCE();
+                FileUtils.writeObjectToFile(exportDestination, database);
+                System.out.println("Successfuly exported.");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private JPanel exportDB_Dialog_GetPanel() {
         JPanel panel = new JPanel();
-        JLabel label = new JLabel("Java Technology Dive Log");
-        ImageIcon image = null;
-        try {
-            image = new ImageIcon(ImageIO.read(
-                    new URL("http://i.imgur.com/6mbHZRU.png")));
-        } catch(MalformedURLException mue) {
-            mue.printStackTrace();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        label.setIcon(image);
-        panel.add(label);
-
+        JButton btn_chooseDestination = new JButton("Destination");
+        panel.add(new JLabel("Choose destination:"));
+        panel.add(btn_chooseDestination);
+        JLabel lbl_path = new JLabel("null path");
+        btn_chooseDestination.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportDestination = FileUtils.getFolderFromUser();
+                lbl_path.setText(exportDestination.getAbsolutePath());
+                lbl_path.updateUI();
+            }
+        });
+        panel.add(lbl_path);
         return panel;
     }
 }
