@@ -67,6 +67,8 @@ public abstract class FileUtils {
     }
 
     public static Object readObjectFromFile(File file) throws IOException, ClassNotFoundException {
+        if(file == null)
+            return null;
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         return ois.readObject();

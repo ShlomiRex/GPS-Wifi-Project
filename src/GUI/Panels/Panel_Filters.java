@@ -8,8 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import CSV.Enums.DateFormats;
+import Database.Filters.Base.AbstractFilter;
 import Database.Filters.ComboLineFilters.*;
+import Database.Filters.OperationFilters.And_Filter;
+import Database.Filters.OperationFilters.Or_Filter;
 import Utils.FileUtils;
+import Utils.FolderUtils;
 import Utils.Paths;
 
 public final class Panel_Filters extends JPanel {
@@ -18,6 +22,11 @@ public final class Panel_Filters extends JPanel {
     public static Panel_Filters getINSTANCE() {
         return INSTANCE;
     }
+
+    private AbstractFilter and_filter1, and_filter2,
+        or_filter1, or_filter2;
+    private String and_filter1_String, and_filter2_String,
+        or_filter1_String, or_filter2_String;
 
     private JButton btn_filter_ID, btn_filter_Location, btn_filter_Time;
     private Panel_Filters() {
@@ -150,7 +159,167 @@ public final class Panel_Filters extends JPanel {
 
 
 
+/** And filter**/
+        JPanel panel_filterCreate_AndFilter = new JPanel();
+        JButton btn_filterCreate_And_ChooseFilter_First = new JButton("Choose Filter 1");
+        JButton btn_filterCreate_And_ChooseFilter_Second = new JButton("Choose Filter 2");
+        JButton btn_filterCreate_AndFilter = new JButton("Create");
+        JLabel lbl_and_firstFilter = new JLabel("null");
+        JLabel lbl_and_secondFilter = new JLabel("null");
+        panel_filterCreate_AndFilter.add(btn_filterCreate_AndFilter);
 
-        JPanel panel_filterCreate_
+        panel_filterCreate_AndFilter.add(new JLabel("Name:"));
+        panel_filterCreate_AndFilter.add(lbl_and_firstFilter);
+        panel_filterCreate_AndFilter.add(btn_filterCreate_And_ChooseFilter_First);
+
+        panel_filterCreate_AndFilter.add(new JLabel("Name:"));
+        panel_filterCreate_AndFilter.add(lbl_and_secondFilter);
+        panel_filterCreate_AndFilter.add(btn_filterCreate_And_ChooseFilter_Second);
+
+        panel_filterCreate_AndFilter.setBorder(BorderFactory.createTitledBorder("AND Filter"));
+
+        btn_filterCreate_AndFilter.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                And_Filter and_filter = new And_Filter(and_filter1, and_filter2);
+                File filterFile = new File(Paths.SAVE_FILTERS+"AND_Filter_" + and_filter1_String + "__" + and_filter2_String);
+                try {
+                    filterFile.createNewFile();
+                    FileUtils.writeObjectToFile(filterFile, and_filter);
+                    JOptionPane.showMessageDialog(null,"Success! \nLocation: " + filterFile);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+
+        btn_filterCreate_And_ChooseFilter_First.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File filterFile = FileUtils.getFileFromUser();
+                try {
+                    and_filter1 = (AbstractFilter) FileUtils.readObjectFromFile(filterFile);
+                    and_filter1_String = filterFile.getName();
+                    lbl_and_firstFilter.setText(and_filter1_String);
+                    lbl_and_firstFilter.updateUI();
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+
+        btn_filterCreate_And_ChooseFilter_Second.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File filterFile = FileUtils.getFileFromUser();
+                try {
+                    and_filter2 = (AbstractFilter) FileUtils.readObjectFromFile(filterFile);
+                    and_filter2_String = filterFile.getName();
+                    lbl_and_secondFilter.setText(and_filter2_String);
+                    lbl_and_secondFilter.updateUI();
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        add(panel_filterCreate_AndFilter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** Or Filter**/
+        JPanel panel_filterCreate_OrFilter = new JPanel();
+        JButton btn_filterCreate_Or_ChooseFilter_First = new JButton("Choose Filter 1");
+        JButton btn_filterCreate_Or_ChooseFilter_Second = new JButton("Choose Filter 2");
+        JButton btn_filterCreate_OrFilter = new JButton("Create");
+        JLabel lbl_firstFilter_Or = new JLabel("null");
+        JLabel lbl_secondFilter_Or = new JLabel("null");
+        panel_filterCreate_OrFilter.add(btn_filterCreate_OrFilter);
+
+        panel_filterCreate_OrFilter.add(new JLabel("Name:"));
+        panel_filterCreate_OrFilter.add(lbl_firstFilter_Or);
+        panel_filterCreate_OrFilter.add(btn_filterCreate_Or_ChooseFilter_First);
+
+        panel_filterCreate_OrFilter.add(new JLabel("Name:"));
+        panel_filterCreate_OrFilter.add(lbl_secondFilter_Or);
+        panel_filterCreate_OrFilter.add(btn_filterCreate_Or_ChooseFilter_Second);
+
+        panel_filterCreate_OrFilter.setBorder(BorderFactory.createTitledBorder("OR Filter"));
+
+        btn_filterCreate_OrFilter.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Or_Filter or_filter = new Or_Filter(or_filter1, or_filter2);
+                File filterFile = new File(Paths.SAVE_FILTERS+"OR_Filter_" + or_filter1_String + "__" + or_filter2_String);
+                try {
+                    filterFile.createNewFile();
+                    FileUtils.writeObjectToFile(filterFile, or_filter);
+                    JOptionPane.showMessageDialog(null,"Success! \nLocation: " + filterFile);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+
+        btn_filterCreate_Or_ChooseFilter_First.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File filterFile = FileUtils.getFileFromUser();
+                try {
+                    or_filter1 = (AbstractFilter) FileUtils.readObjectFromFile(filterFile);
+                    or_filter1_String = filterFile.getName();
+                    lbl_firstFilter_Or.setText(or_filter1_String);
+                    lbl_firstFilter_Or.updateUI();
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+        });
+
+        btn_filterCreate_Or_ChooseFilter_Second.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File filterFile = FileUtils.getFileFromUser();
+                try {
+                    or_filter2 = (AbstractFilter) FileUtils.readObjectFromFile(filterFile);
+                    or_filter2_String = filterFile.getName();
+                    lbl_secondFilter_Or.setText(or_filter2_String);
+                    lbl_secondFilter_Or.updateUI();
+                } catch (Throwable e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        add(panel_filterCreate_OrFilter);
+
+
+
+        JButton btn_open_filters_folder = new JButton("Open Filters Folder");
+        add(btn_open_filters_folder);
+        btn_open_filters_folder.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    FileUtils.openFile(new File(Paths.SAVE_FILTERS+"/"));
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
     }
 }
