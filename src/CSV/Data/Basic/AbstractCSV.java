@@ -75,7 +75,10 @@ public abstract class AbstractCSV extends File implements IAbstractCSV {
      * @throws IOException
      */
     public static List<String[]> read(File fileToRead) throws IOException {
-        CSVReader reader = new CSVReader(new FileReader(fileToRead));
+        if(fileToRead == null)
+            return null;
+        FileReader fileReader = new FileReader(fileToRead);
+        CSVReader reader = new CSVReader(fileReader);
         List<String[]> result = reader.readAll();
         reader.close();
         return result;

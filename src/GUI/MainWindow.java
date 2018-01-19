@@ -1,23 +1,35 @@
 package GUI;
 
-import GUI.Panels.Panel_Login;
+import GUI.Panels.*;
 
 import javax.swing.*;
-import java.io.IOException;
+import java.awt.*;
 
-public class MainWindow extends JFrame {
-    private MainPanel mainPanel;
-    private Panel_Login login;
-    public MainWindow() throws IOException {
+public final class MainWindow extends JFrame {
+    private static MainWindow INSTANCE = new MainWindow();
+    public static MainWindow getINSTANCE() {
+        return INSTANCE;
+    }
+
+    public MainWindow() {
         super();
-        mainPanel = new MainPanel();
-        login = new Panel_Login();
+        //mainPanel = new MainPanel();
 
-        JTabbedPane main = new JTabbedPane();
-        main.addTab("Main",mainPanel);
-        main.addTab("Login", login);
+        JTabbedPane mainPanel = new JTabbedPane();
 
-        add(main);
+        JPanel panel_io_wrapper = new JPanel();
+        panel_io_wrapper.setLayout(new GridLayout(0, 1));
+        panel_io_wrapper.add(Panel_IO.getINSTANCE());
+
+        mainPanel.addTab("Database", Panel_Database.getINSTANCE());
+        mainPanel.addTab("I/O", panel_io_wrapper);
+        mainPanel.addTab("Login", Panel_Login.getInstance());
+        mainPanel.addTab("Debug", Panel_Debug.getINSTANCE());
+        mainPanel.addTab("Algorithem 1", Panel_Algorithems1.getINSTANCE());
+        mainPanel.addTab("Algorithem 2", Panel_Algorithems2.getINSTANCE());
+        mainPanel.addTab("Filters", Panel_Filters.getINSTANCE());
+
+        add(mainPanel);
 
         setSize(800, 600);
         setDefaultLookAndFeelDecorated(true);

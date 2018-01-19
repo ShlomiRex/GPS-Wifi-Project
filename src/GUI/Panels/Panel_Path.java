@@ -10,7 +10,12 @@ import java.awt.event.ActionListener;
 public final class Panel_Path extends JPanel{
     public static JLabel lbl_Path_Label, lbl_Path, lbl_Selected_Label, lbl_Selected_Text_SelectedType;
     public static JButton btn_Path_CopyToClipboard;
-    public Panel_Path() {
+    private static Panel_Path INSTANCE = new Panel_Path();
+    public static Panel_Path getINSTANCE() {
+        return INSTANCE;
+    }
+
+    private Panel_Path() {
 
         lbl_Path_Label = new JLabel("Path: ");
         lbl_Path = new JLabel("");
@@ -38,6 +43,6 @@ public final class Panel_Path extends JPanel{
         add(lbl_Selected_Label);
         add(lbl_Selected_Text_SelectedType);
 
-        setBorder(BorderFactory.createTitledBorder("Chosen Path"));
+        setBorder(BorderFactory.createTitledBorder("Path"));
     }
 }

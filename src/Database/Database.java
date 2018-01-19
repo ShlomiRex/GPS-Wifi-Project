@@ -1,5 +1,7 @@
 package Database;
 
+import Algorithems.Algo2;
+import Algorithems.Data.Algo2UserInput;
 import CSV.Combo.ComboCSV;
 import CSV.Combo.ComboLine;
 import CSV.Combo.ComboLines;
@@ -9,19 +11,38 @@ import CSV.Data.GeoPoint;
 import CSV.Wigle.WigleCSV;
 import Database.Concurrency.ComboLineTask;
 import Database.Concurrency.ComboLinesRunner;
-import GUI.MainPanel;
+import GUI.Panels.Panel_Database;
 import Utils.Paths;
-import au.com.bytecode.opencsv.CSVReader;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class Database extends AbstractCSV implements Serializable{
+public class Database extends AbstractCSV implements Serializable {
+
+    private static Database INSTANCE;
+
+    static {
+        try {
+            String path = "Database.csv";
+            try {
+                Files.createFile(java.nio.file.Paths.get(path));
+            } catch (FileAlreadyExistsException e) {
+
+            }
+            INSTANCE = new Database(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ComboLines data;
     public int lineCount = 0;
@@ -30,18 +51,37 @@ public class Database extends AbstractCSV implements Serializable{
     /**
      * Creates empty Database wich represents a csv file with bunch of information. This file
      * can change it's type: Wigle, Combo, OR KML.
-     * @param fileOfDatabase
      * @throws IOException
      */
-    public Database(final File fileOfDatabase) throws IOException {
+    private Database(File fileOfDatabase) throws IOException, ClassNotFoundException {
         super(fileOfDatabase);
-        System.out.println("Initialized database: " + this.getAbsolutePath());
-        try {
-            updateDatas();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         System.out.println("Database initialized successfuly.");
+    }
+
+
+    public void writeDatabaseClassToFile(File fileToWriteTo, Database database) throws IOException {
+        Files.createFile(java.nio.file.Paths.get(fileToWriteTo.getAbsolutePath()));
+        FileOutputStream fos = new FileOutputStream(fileToWriteTo);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(database);
+        oos.close();
+        fos.close();
+    }
+
+    public Database readDatabase(File databaseFile) throws IOException, ClassNotFoundException {
+        if(databaseFile == null)
+            return null;
+        FileInputStream fis = new FileInputStream(databaseFile);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        return (Database)ois.readObject();
+    }
+
+    /**
+     *
+     * @return This instance.
+     */
+    public static Database getINSTANCE() {
+        return INSTANCE;
     }
 
     /**
@@ -89,7 +129,6 @@ public class Database extends AbstractCSV implements Serializable{
      * Delete this database's data. Empty file.
      * @return
      */
-    @Override
     public boolean delete() {
         PrintWriter writer = null;
         try {
@@ -117,7 +156,10 @@ public class Database extends AbstractCSV implements Serializable{
      */
     public void updateDatas() throws Exception {
         data = new ComboLines();
-        List<String[]> lines = read(this);
+        ArrayList<String[]> lines = new ArrayList<>();
+        List<String[]> linesToAdd = read(this);
+        if(linesToAdd != null)
+            lines.addAll(linesToAdd);
         //TODO: This is so strange! It reads more lines than there actually are!
         System.out.println("[UpdateDatas] Lines: " + lines.size());
         int i = 0;
@@ -136,8 +178,8 @@ public class Database extends AbstractCSV implements Serializable{
      * Updates the GUI for user of the database.
      */
     private void updateDatabaseUI() {
-        if(MainPanel.panel_Database != null) {
-            MainPanel.panel_Database.updateStatistics();
+        if(Panel_Database.getINSTANCE() != null) {
+            Panel_Database.getINSTANCE().updateStatistics();
         }
     }
 //
@@ -218,15 +260,19 @@ public class Database extends AbstractCSV implements Serializable{
         return result;
     }
 
-    /**
-     * No gps line is as described in matala 2 question 2
-     * @param no_gps_line
-     * @return
-     */
-    public GeoPoint calculateLocationByNoGPSLine(String no_gps_line) {
-        String[] splitted = no_gps_line.split(",");
-        Algo2
+    //TODO: Finish function
+//    /**
+//     * No gps line is as described in matala 2 question 2
+//     * @param no_gps_line
+//     * @return
+//     */
+//    public GeoPoint calculateLocationByNoGPSLine(String no_gps_line) throws Exception {
+//        String[] splitted = no_gps_line.split(",");
+//        ComboLine comboLine = new ComboLine(splitted);
+//        return Algo1.algo1(data, )
+//    }
+
+    public GeoPoint calcLocByInput(Algo2UserInput input1, Algo2UserInput input2, Algo2UserInput input3) {
+        return Algo2.algo2(data, input1, input2, input3);
     }
-
-
 }

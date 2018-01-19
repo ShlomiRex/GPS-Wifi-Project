@@ -2,8 +2,7 @@ package Utils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 public abstract class FileUtils {
@@ -57,5 +56,19 @@ public abstract class FileUtils {
 
         Desktop desktop = Desktop.getDesktop();
         desktop.open(file);
+    }
+
+    public static void writeObjectToFile(File file, Object object) throws IOException {
+        FileOutputStream fos = new FileOutputStream(file);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(object);
+        oos.close();
+        fos.close();
+    }
+
+    public static Object readObjectFromFile(File file) throws IOException, ClassNotFoundException {
+        FileInputStream fis = new FileInputStream(file);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        return ois.readObject();
     }
 }

@@ -1,7 +1,6 @@
 package GUI.Panels;
 
 import CSV.Combo.ComboCSV;
-import GUI.GUI;
 import GUI.Logic.Selected;
 import GUI.Logic.SelectedFileType;
 import Utils.FileUtils;
@@ -11,12 +10,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import static GUI.MainPanel.*;
-import static GUI.MainPanel.setAllPanelsVisible;
-
 public final class Panel_IO extends JPanel implements ActionListener{
+
     public JButton btn_IOInput_ChooseFolder, btn_IOInput_ChooseFile_Combo;
-    public Panel_IO() {
+    public File selected = null;
+    public SelectedFileType selectedType = SelectedFileType.Null;
+
+    private static Panel_IO INSTANCE = new Panel_IO();
+    public static Panel_IO getINSTANCE() {
+        return INSTANCE;
+    }
+
+    private Panel_IO() {
         btn_IOInput_ChooseFolder = new JButton("Choose folder of wigles");
         btn_IOInput_ChooseFolder.addActionListener(new ActionListener() {
             @Override
@@ -26,11 +31,10 @@ public final class Panel_IO extends JPanel implements ActionListener{
                     System.err.println("Chosen folder is null.");
                     return;
                 }
-                panel_Path.lbl_Path.setText(folder.getAbsolutePath());
-                GUI.selected = new Selected(folder.getAbsolutePath(), SelectedFileType.Folder);
-                panel_Path.lbl_Selected_Text_SelectedType.setText("Folder");
+                Panel_Path.getINSTANCE().lbl_Path.setText(folder.getAbsolutePath());
+                selected = new Selected(folder.getAbsolutePath(), SelectedFileType.Folder);
+                Panel_Path.getINSTANCE().lbl_Selected_Text_SelectedType.setText("Folder");
 
-                setAllPanelsVisible();
             }
         });
 
@@ -38,18 +42,18 @@ public final class Panel_IO extends JPanel implements ActionListener{
         btn_IOInput_ChooseFile_Combo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Adding file/folder to database...");
                 File file = Utils.FileUtils.getFileFromUser();
                 if(file == null) {
                     System.err.println("Chosen file is null.");
                     return;
                 }
-                panel_Path.lbl_Path.setText(file.getAbsolutePath());
+                Panel_Path.getINSTANCE().lbl_Path.setText(file.getAbsolutePath());
                 try {
                     ComboCSV comboCSV = new ComboCSV(file);
-                    panel_Path.lbl_Selected_Text_SelectedType.setText("Combo CSV file");
-                    GUI.selected = new Selected(file.getAbsolutePath(), SelectedFileType.Combo);
+                    Panel_Path.getINSTANCE().lbl_Selected_Text_SelectedType.setText("Combo CSV file");
+                    selected = new Selected(file.getAbsolutePath(), SelectedFileType.Combo);
 
-                    setAllPanelsVisible();
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(null,
@@ -57,12 +61,18 @@ public final class Panel_IO extends JPanel implements ActionListener{
                             "Combo conversion error",
                             JOptionPane.ERROR_MESSAGE);
                 }
+                System.out.println("Added successfuly.");
             }
         });
 
-        add(btn_IOInput_ChooseFolder);
-        add(btn_IOInput_ChooseFile_Combo);
-        setBorder(BorderFactory.createTitledBorder("I/O Input"));
+        JPanel panel_btnWrapper = new JPanel();
+        panel_btnWrapper.add(btn_IOInput_ChooseFolder);
+        panel_btnWrapper.add(btn_IOInput_ChooseFile_Combo);
+        panel_btnWrapper.setBorder(BorderFactory.createTitledBorder("Choose"));
+        add(panel_btnWrapper);
+
+        add(Panel_Path.getINSTANCE());
+        add(Panel_SelectedOptions.getINSTANCE());
     }
 
     @Override

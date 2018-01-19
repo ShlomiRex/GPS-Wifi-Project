@@ -1,5 +1,6 @@
 package Tests;
 
+import Algorithems.Algo1;
 import CSV.Combo.ComboCSV;
 import CSV.Data.GeoPoint;
 import CSV.Wigle.WigleCSV;

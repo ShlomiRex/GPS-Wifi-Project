@@ -12,4 +12,6 @@ public interface Paths {
 
 
     String csv_BM2 = DATA_MOODLE_TESTING + "/_comb_all_BM2_.csv";
+    String SAVE = "Save/";
+    String SAVE_FILTERS = "Save/Filters/";
 }

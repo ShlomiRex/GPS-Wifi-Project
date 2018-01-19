@@ -1,7 +1,5 @@
 package GUI.Panels;
 
-import GUI.GUI;
-import GUI.Logic.Selected;
 import Utils.FileUtils;
 
 import javax.swing.*;
@@ -13,22 +11,27 @@ import static GUI.MainPanel.*;
 
 public final class Panel_Debug extends JPanel {
 
+    private static Panel_Debug INSTANCE = new Panel_Debug();
+    public static Panel_Debug getINSTANCE() {
+        return INSTANCE;
+    }
     public JButton btn_Print, btn_Open;
     public Panel_Debug() {
         btn_Print = new JButton("Print to console selected");
         btn_Print.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(GUI.selected == null) {
+                File selected = Panel_IO.getINSTANCE().selected;
+                if(selected == null) {
                     System.err.println("Cannot print to console, null selected.");
                     return;
                 }
 
-                if(GUI.selected.isFile()) {
-                    System.out.println("File: " + GUI.selected.getAbsolutePath());
+                if(selected.isFile()) {
+                    System.out.println("File: " + selected.getAbsolutePath());
                     BufferedReader br = null;
                     try {
-                        br = new BufferedReader(new FileReader(GUI.selected));
+                        br = new BufferedReader(new FileReader(selected));
                         String line = null;
                         while ((line = br.readLine()) != null) {
                             System.out.println(line);
@@ -40,7 +43,7 @@ public final class Panel_Debug extends JPanel {
                         e1.printStackTrace();
                     }
                 } else {
-                    File[] files = GUI.selected.listFiles();
+                    File[] files = selected.listFiles();
                     for(File file : files) {
                         System.out.println(file.getName());
                     }
@@ -52,17 +55,18 @@ public final class Panel_Debug extends JPanel {
         btn_Open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(GUI.selected == null || GUI.selected.getAbsolutePath().equals("")){
+                File selected = Panel_IO.getINSTANCE().selected;
+                if(selected == null || selected.getAbsolutePath().equals("")){
                     System.err.println("Cannot open null file.");
                     return;
                 }
                 try {
-                    FileUtils.openFile(GUI.selected);
-                    System.out.println("Openning: " + panel_Path.lbl_Path.getText());
+                    FileUtils.openFile(selected);
+                    System.out.println("Openning: " + Panel_Path.getINSTANCE().lbl_Path.getText());
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(null,
-                            "Cannot open path: " + panel_Path.lbl_Path.getText(),
+                            "Cannot open path: " + Panel_Path.getINSTANCE().lbl_Path.getText(),
                             "Cannot open path",
                             JOptionPane.ERROR_MESSAGE);
                 }

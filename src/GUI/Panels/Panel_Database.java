@@ -1,32 +1,34 @@
 package GUI.Panels;
 
-import GUI.MainPanel;
+import Database.Database;
 import Utils.FileUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static GUI.MainPanel.*;
-
 public final class Panel_Database extends JPanel{
+
+    private static Panel_Database INSTANCE = new Panel_Database();
+    public static Panel_Database getINSTANCE() {
+        return INSTANCE;
+    }
 
     public JButton btn_OpenDatabase, btn_DeleteDatabase, btn_ExportDB;
     public JLabel lbl_Statistics_LinesCount;
 
-    public Panel_Database() {
+    private Panel_Database() {
         btn_OpenDatabase = new JButton("Open database");
         btn_OpenDatabase.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    FileUtils.openFile((File)database);
-                    MainPanel.database.updateDatas();
+                    FileUtils.openFile(Database.getINSTANCE());
+                    Database.getINSTANCE().updateDatas();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 } catch (Exception e1) {
@@ -43,10 +45,10 @@ public final class Panel_Database extends JPanel{
                         "Are you sure you want to delete database? This can't be undone!");
 
                 if(dialogResult == JOptionPane.YES_OPTION){
-                    database.delete();
+                    Database.getINSTANCE().delete();
                     System.out.println("\n\nDatabase Deleted.\n\n");
                     try {
-                        MainPanel.database.updateDatas();
+                        Database.getINSTANCE().updateDatas();
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
@@ -73,13 +75,11 @@ public final class Panel_Database extends JPanel{
         lbl_Statistics_LinesCount = new JLabel("");
         updateStatistics();
         statisticsPanel.add(lbl_Statistics_LinesCount);
-        statisticsPanel.setBorder(BorderFactory.createTitledBorder("Statistics"));
-
         add(statisticsPanel);
     }
 
     public void updateStatistics() {
-        lbl_Statistics_LinesCount.setText("Line count: " + MainPanel.database.lineCount);
+        lbl_Statistics_LinesCount.setText("Line count: " + Database.getINSTANCE().lineCount);
     }
 
     private void exportDB_Dialog() {
